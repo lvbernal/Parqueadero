@@ -47,7 +47,7 @@
                             <Label Text="{Binding BaseFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Hora adicional" FontSize="Small" HorizontalOptions="StartAndExpand" />
+                            <Label Text="{Binding AdditionalHours, StringFormat='Hora adicional ({0})'}" FontSize="Small" HorizontalOptions="StartAndExpand" />
                             <Label Text="{Binding AdditionalFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">

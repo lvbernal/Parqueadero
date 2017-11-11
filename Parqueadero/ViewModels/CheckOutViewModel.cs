@@ -35,7 +35,8 @@ namespace Parqueadero.ViewModels
                     var difference = CheckOutTime - CheckInTime;
                     var hours = difference.Hours;
                     var minutes = difference.Minutes;
-                    hours -= minutes > Constants.HourToleranceInMinutes ? 0 : 1;
+                    hours -= (hours > 0 && minutes > Constants.HourToleranceInMinutes) ? 0 : 1;
+                    AdditionalHours = hours;
                     AdditionalFee = hours * Constants.GetFee(CurrentVehicle.VehicleType);
                 }
             }
@@ -116,6 +117,17 @@ namespace Parqueadero.ViewModels
                 _baseFee = value;
                 NotifyPropertyChanged();
                 NotifyPropertyChanged(nameof(TotalFee));
+            }
+        }
+
+        private int _additionalHours;
+        public int AdditionalHours
+        {
+            get { return _additionalHours; }
+            set
+            {
+                _additionalHours = value;
+                NotifyPropertyChanged();
             }
         }
 
