@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+check in by Chinnaking from the Noun Project
+checkout by Chinnaking from the Noun Project
+Car by jeff from the Noun Project
+Truck by jeff from the Noun Project
+Truck by jeff from the Noun Project
+ATV by jeff from the Noun Project
+Bicycle by jeff from the Noun Project
+Helmet by Gabriel Ciccariello from the Noun Project
+subtraction by Marta Ambrosetti from the Noun Project
+addition by Marta Ambrosetti from the Noun Project
+
+Colors used
+https://color.adobe.com/Copy-of-Picture-book-color-theme-10127683/
+
+-->
+
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Parqueadero" 
+    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+    x:Class="Parqueadero.Pages.MainPage"
+    BindingContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" Android="13" iOS="13, 25, 13, 13" />
+    </ContentPage.Padding>
+
+    <StackLayout VerticalOptions="CenterAndExpand">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+
+            <controls:CircleImage Source="checkin.png" FillColor="#56b9d0" HeightRequest="144" WidthRequest="144">
+                <controls:CircleImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DoCheckInCommand}" />
+                </controls:CircleImage.GestureRecognizers>
+            </controls:CircleImage>
+
+            <controls:CircleImage Source="checkout.png" FillColor="#f24c27" HeightRequest="144" WidthRequest="144">
+                <controls:CircleImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DoCheckOutCommand}" />
+                </controls:CircleImage.GestureRecognizers>
+            </controls:CircleImage>
+            
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,36,0,0">
+        </StackLayout>
+    </StackLayout>
+    
+</ContentPage>

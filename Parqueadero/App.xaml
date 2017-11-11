@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+    xmlns:infra="clr-namespace:Parqueadero.Infrastructure" 
+    xmlns:helpers="clr-namespace:Parqueadero.Helpers" 
+    xmlns:services="clr-namespace:Parqueadero.Services" 
+    x:Class="Parqueadero.App">
+    
+	<Application.Resources>
+        <ResourceDictionary>
+            
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="#3b3f42" />
+                <Setter Property="FontSize" Value="32" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="#fefefe" />
+            </Style>
+
+            <Style TargetType="controls:CircleImage">
+                <Setter Property="Aspect" Value="AspectFill" />
+                <Setter Property="FillColor" Value="#3b3f42" />
+                <Setter Property="HeightRequest" Value="80" />
+                <Setter Property="WidthRequest" Value="80" />
+            </Style>
+
+            <Color x:Key="UnselectedVehicleColor">#3b3f42</Color>
+            <Color x:Key="SelectedVehicleColor">#56b9d0</Color>
+            
+            <infra:InstanceLocator x:Key="Locator"></infra:InstanceLocator>
+            <services:DataService x:Key="DataService"></services:DataService>
+
+            <helpers:PlateConverter x:Key="PlateConverter"></helpers:PlateConverter>
+            <helpers:VehicleOptionConverter x:Key="VehicleOptionConverter"></helpers:VehicleOptionConverter>
+            <helpers:VehicleLogoConverter x:Key="VehicleLogoConverter"></helpers:VehicleLogoConverter>
+            <helpers:BooleanNegationConverter x:Key="BooleanNegationConverter"></helpers:BooleanNegationConverter>
+            
+        </ResourceDictionary>
+	</Application.Resources>
+</Application>
