@@ -35,7 +35,12 @@ namespace Parqueadero.ViewModels
                     var difference = CheckOutTime - CheckInTime;
                     var hours = difference.Hours;
                     var minutes = difference.Minutes;
-                    hours -= (hours > 0 && minutes > Constants.HourToleranceInMinutes) ? 0 : 1;
+
+                    if (hours > 0 && minutes <= Constants.HourToleranceInMinutes)
+                    {
+                        hours--;
+                    }
+
                     AdditionalHours = hours;
                     AdditionalFee = hours * Constants.GetFee(CurrentVehicle.VehicleType);
                 }
@@ -178,6 +183,15 @@ namespace Parqueadero.ViewModels
 
             var dataService = (DataService)Application.Current.Resources["DataService"];
             await dataService.SaveVehicle(CurrentVehicle);
+
+            var printService = (PrintService)Application.Current.Resources["PrintService"];
+            var printed = await printService.PrintCheckOut(CurrentVehicle);
+
+            if (!printed)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", Constants.PrintCheckOutError, "OK");
+            }
+
             await Application.Current.MainPage.Navigation.PopAsync();
         }
 

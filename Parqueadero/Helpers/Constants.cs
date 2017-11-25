@@ -5,8 +5,8 @@ namespace Parqueadero.Helpers
 {
     public class Constants
     {
-        public static string ApplicationURL = Environment.GetEnvironmentVariable("BACKEND_URL_PARQ");
-        public static string ParkingLotId = Environment.GetEnvironmentVariable("PARKINGLOT_ID");
+        public static string ApplicationURL = (string)Environment.GetEnvironmentVariable("BACKEND_URL_PARQ");
+        public static string ParkingLotId = (string)Environment.GetEnvironmentVariable("PARKINGLOT_ID");
 
         public static double CarBase = 2500;
         public static double CarFee = 2500;
@@ -22,6 +22,9 @@ namespace Parqueadero.Helpers
         public static double HelmetsBase = 500;
 
         public static int HourToleranceInMinutes = 10;
+
+        public static string PrintCheckInError = "No fue posible imprimir el recibo.";
+        public static string PrintCheckOutError = "No fue posible imprimir el recibo.";
 
 
         public static double GetBaseFee(string vehicleType)

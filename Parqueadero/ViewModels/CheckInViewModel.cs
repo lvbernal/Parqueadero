@@ -206,9 +206,20 @@ namespace Parqueadero.ViewModels
                 Helmets = Helmets
             };
 
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            await dataService.SaveVehicle(vehicle);
-            await Application.Current.MainPage.Navigation.PopAsync();
+            var printService = (PrintService)Application.Current.Resources["PrintService"];
+            var printed = await printService.PrintCheckIn(vehicle);
+
+            if (printed)
+            {
+                var dataService = (DataService)Application.Current.Resources["DataService"];
+                await dataService.SaveVehicle(vehicle);
+
+                await Application.Current.MainPage.Navigation.PopAsync();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", Constants.PrintCheckInError, "OK");
+            }
         }
     }
 }
