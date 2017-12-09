@@ -14,7 +14,8 @@ namespace Parqueadero.Helpers
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var current = (bool)value;
+            return !current;
         }
     }
 }

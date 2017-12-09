@@ -12,66 +12,68 @@
     
 	<ContentPage.Content>
         <ScrollView>
-        
-            <Grid BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan, Converter={StaticResource BooleanNegationConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0">
-                    <controls:CircleImage Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}}" FillColor="#f24c27" HorizontalOptions="Center" />
-                    <Label Text="{Binding Plate}" FontSize="48" VerticalTextAlignment="Center" />
-                </StackLayout>
+            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="1">
-                    <StackLayout Orientation="Horizontal">
-                        <controls:CircleImage Source="checkin.png" FillColor="#56b9d0" HeightRequest="32" WidthRequest="32" />
-                        <Label Text="{Binding CheckInTime}" FontSize="Large" VerticalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal">
-                        <controls:CircleImage Source="checkout.png" FillColor="#f24c27" HeightRequest="32" WidthRequest="32" />
-                        <Label Text="{Binding CheckOutTime}" FontSize="Large" VerticalOptions="Center" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                        <controls:CircleImage Source="helmet.png" FillColor="#fefefe" HeightRequest="48" WidthRequest="48" />
-                        <Label Text="{Binding Helmets}" VerticalOptions="Center" WidthRequest="64" FontSize="Large" />
-                    </StackLayout>
-                </StackLayout>
+                <Grid BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan, Converter={StaticResource BooleanNegationConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <StackLayout VerticalOptions="EndAndExpand" Grid.Row="2">
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Base" FontSize="Small" HorizontalOptions="StartAndExpand" />
-                            <Label Text="{Binding BaseFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding AdditionalHours, StringFormat='Hora adicional ({0})'}" FontSize="Small" HorizontalOptions="StartAndExpand" />
-                            <Label Text="{Binding AdditionalFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Accesorios" FontSize="Small" HorizontalOptions="StartAndExpand" />
-                            <Label Text="{Binding HelmetsFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
-                        </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Grid.Row="0">
+                        <controls:CircleImage Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}}" FillColor="#f24c27" HorizontalOptions="Center" />
+                        <Label Text="{Binding Plate}" FontSize="48" VerticalTextAlignment="Center" />
                     </StackLayout>
                     
-                    <Button Text="{Binding TotalFee, StringFormat='${0}'}" Command="{Binding CheckOutCommand}" BackgroundColor="#f24c27" TextColor="#fefefe" FontAttributes="Bold" FontSize="Large" />
-                </StackLayout>
-            
-            </Grid>
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="1">
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="checkin.png" FillColor="#56b9d0" HeightRequest="32" WidthRequest="32" />
+                            <Label Text="{Binding CheckInTime}" FontSize="Large" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="checkout.png" FillColor="#f24c27" HeightRequest="32" WidthRequest="32" />
+                            <Label Text="{Binding CheckOutTime}" FontSize="Large" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <controls:CircleImage Source="helmet.png" FillColor="#fefefe" HeightRequest="48" WidthRequest="48" />
+                            <Label Text="{Binding Helmets}" VerticalOptions="Center" WidthRequest="64" FontSize="Large" />
+                        </StackLayout>
+                    </StackLayout>
 
-            <Grid x:Name="scannerGrid" BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <StackLayout Grid.Row="1" Grid.Column="0">
-                    <Entry x:Name="NoReceiptPlate" Placeholder="Placa" Text="{Binding NoReceiptPlate, Mode=TwoWay, Converter={StaticResource PlateConverter}}" FontSize="48" HorizontalTextAlignment="Center" />
-                    <Button x:Name="NoReceiptButton" Text="Sin recibo" BackgroundColor="#fbba42" TextColor="#fefefe" FontAttributes="Bold" />
-                </StackLayout>
-            </Grid>
+                    <StackLayout VerticalOptions="EndAndExpand" Grid.Row="2">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Base" FontSize="Small" HorizontalOptions="StartAndExpand" />
+                                <Label Text="{Binding BaseFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding AdditionalHours, StringFormat='Hora adicional ({0})'}" FontSize="Small" HorizontalOptions="StartAndExpand" />
+                                <Label Text="{Binding AdditionalFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Accesorios" FontSize="Small" HorizontalOptions="StartAndExpand" />
+                                <Label Text="{Binding HelmetsFee, StringFormat='${0}'}" FontSize="Small" HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                        </StackLayout>
+                        
+                        <Button Text="{Binding TotalFee, StringFormat='${0}'}" Command="{Binding CheckOutCommand}" BackgroundColor="#f24c27" TextColor="#fefefe" FontAttributes="Bold" FontSize="Large" />
+                    </StackLayout>
+                
+                </Grid>
 
+                <Grid x:Name="scannerGrid" BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="1" Grid.Column="0">
+                        <Entry x:Name="NoReceiptPlate" Placeholder="Placa" Text="{Binding NoReceiptPlate, Mode=TwoWay, Converter={StaticResource PlateConverter}}" FontSize="48" HorizontalTextAlignment="Center" />
+                        <Button x:Name="NoReceiptButton" Text="Sin recibo" BackgroundColor="#fbba42" TextColor="#fefefe" FontAttributes="Bold" FontSize="Large" />
+                    </StackLayout>
+                </Grid>
+
+            </StackLayout>
         </ScrollView>
 	</ContentPage.Content>
 </ContentPage>

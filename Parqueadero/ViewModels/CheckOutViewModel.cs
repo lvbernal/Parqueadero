@@ -15,13 +15,12 @@ namespace Parqueadero.ViewModels
             get { return _currentVehicle; }
             set
             {
-                if (value != null)
-                {
-                    _currentVehicle = value;
-                    _currentVehicle.CheckOut = DateTime.Now.ToLocalTime();
-                    NotifyPropertyChanged();
+                _currentVehicle = value;
+                NotifyPropertyChanged();
 
-                    DoScan = false;
+                if (_currentVehicle != null)
+                {
+                    _currentVehicle.CheckOut = DateTime.Now.ToLocalTime();
 
                     VehicleType = _currentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
@@ -43,6 +42,8 @@ namespace Parqueadero.ViewModels
 
                     AdditionalHours = hours;
                     AdditionalFee = hours * Constants.GetFee(CurrentVehicle.VehicleType);
+
+                    DoScan = false;
                 }
             }
         }
@@ -214,11 +215,12 @@ namespace Parqueadero.ViewModels
 
             if (!printed)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", Constants.PrintCheckOutError, "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo.", "OK");
             }
 
             await Application.Current.MainPage.Navigation.PopAsync();
 
+            NoReceiptPlate = "";
             Printing = false;
         }
 
