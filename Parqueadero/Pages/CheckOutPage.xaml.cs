@@ -17,6 +17,7 @@ namespace Parqueadero.Pages
             InitializeComponent();
             context = ((MainViewModel)BindingContext).CheckOut;
             InitializeScannerPage();
+            InitializeNoReceiptOption();
         }
 
         private void InitializeScannerPage()
@@ -55,8 +56,29 @@ namespace Parqueadero.Pages
                 scanner.IsTorchOn = !scanner.IsTorchOn;
             };
 
-            scannerGrid.Children.Add(scanner);
-            scannerGrid.Children.Add(overlay);
+            scannerGrid.Children.Add(scanner, 0, 0);
+            scannerGrid.Children.Add(overlay, 0, 0);
+        }
+
+        private void InitializeNoReceiptOption()
+        {
+            NoReceiptButton.Clicked += (s, e) => Device.BeginInvokeOnMainThread(
+                async () =>
+                {
+                    scanner.IsAnalyzing = false;
+
+                    var valid = await context.LoadVehicle(NoReceiptPlate.Text);
+
+                    if (valid)
+                    {
+                        scanner.IsScanning = false;
+                    }
+                    else
+                    {
+                        scanner.IsAnalyzing = true;
+                    }
+                }
+            );
         }
 
         protected override void OnAppearing()

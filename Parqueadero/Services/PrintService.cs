@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Net.Http;
 using Parqueadero.Models;
+using Parqueadero.Helpers;
 
 namespace Parqueadero.Services
 {
@@ -8,6 +10,11 @@ namespace Parqueadero.Services
     {
         public async Task<bool> PrintCheckIn(VehicleRecord vehicle)
         {
+            using (HttpClient client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 0, 10);
+            }
+
             return true;
         }
 

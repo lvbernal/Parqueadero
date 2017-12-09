@@ -11,8 +11,8 @@
     </ContentPage.Padding>
     
 	<ContentPage.Content>
-        <StackLayout>
-            
+        <ScrollView>
+        
             <Grid BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan, Converter={StaticResource BooleanNegationConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -62,8 +62,16 @@
             </Grid>
 
             <Grid x:Name="scannerGrid" BindingContext="{Binding CheckOut}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding DoScan}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="1" Grid.Column="0">
+                    <Entry x:Name="NoReceiptPlate" Placeholder="Placa" Text="{Binding NoReceiptPlate, Mode=TwoWay, Converter={StaticResource PlateConverter}}" FontSize="48" HorizontalTextAlignment="Center" />
+                    <Button x:Name="NoReceiptButton" Text="Sin recibo" BackgroundColor="#fbba42" TextColor="#fefefe" FontAttributes="Bold" />
+                </StackLayout>
             </Grid>
-        </StackLayout>
-            
+
+        </ScrollView>
 	</ContentPage.Content>
 </ContentPage>

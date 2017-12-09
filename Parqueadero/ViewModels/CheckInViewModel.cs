@@ -138,11 +138,23 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private bool _printing;
+        public bool Printing
+        {
+            get { return _printing; }
+            set
+            {
+                _printing = value;
+                NotifyPropertyChanged();
+                CheckInCommand.ChangeCanExecute();
+            }
+        }
+
         public CheckInViewModel()
         {
             AddHelmetCommand = new Command(AddHelmet);
             RemoveHelmetCommand = new Command(RemoveHelmet);
-            CheckInCommand = new Command(CheckIn);
+            CheckInCommand = new Command(CheckIn, () => !Printing);
 
             CarOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Car, BaseFee = Constants.CarBase, Fee = Constants.CarFee };
             PickupOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Pickup, BaseFee = Constants.PickupBase, Fee = Constants.PickupFee };
@@ -195,7 +207,13 @@ namespace Parqueadero.ViewModels
         public Command CheckInCommand { get; }
         public async void CheckIn()
         {
-            if (!IsValid) { return; }
+            Printing = true;
+
+            if (!IsValid)
+            {
+                Printing = false;
+                return;
+            }
 
             VehicleRecord vehicle = new VehicleRecord()
             {
@@ -220,6 +238,8 @@ namespace Parqueadero.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Error", Constants.PrintCheckInError, "OK");
             }
+
+            Printing = false;
         }
     }
 }

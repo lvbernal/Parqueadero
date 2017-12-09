@@ -160,6 +160,17 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private string _noReceiptPlate = "";
+        public string NoReceiptPlate
+        {
+            get { return _noReceiptPlate; }
+            set
+            {
+                _noReceiptPlate = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public double TotalFee
         {
             get
@@ -168,9 +179,21 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private bool _printing;
+        public bool Printing
+        {
+            get { return _printing; }
+            set
+            {
+                _printing = value;
+                NotifyPropertyChanged();
+                CheckOutCommand.ChangeCanExecute();
+            }
+        }
+
         public CheckOutViewModel()
         {
-            CheckOutCommand = new Command(CheckOut);
+            CheckOutCommand = new Command(CheckOut, () => !Printing);
             CurrentVehicle = null;
             DoScan = true;
         }
@@ -178,6 +201,8 @@ namespace Parqueadero.ViewModels
         public Command CheckOutCommand { get; }
         public async void CheckOut()
         {
+            Printing = true;
+
             CurrentVehicle.Fee = TotalFee;
             CurrentVehicle.Done = true;
 
@@ -193,6 +218,8 @@ namespace Parqueadero.ViewModels
             }
 
             await Application.Current.MainPage.Navigation.PopAsync();
+
+            Printing = false;
         }
 
         public async Task<bool> LoadVehicle(string code)
