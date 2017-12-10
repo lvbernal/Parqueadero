@@ -126,7 +126,7 @@ class Printer(object):
 
             p.text("\n")
             p.qr(plate, size=8)
-            p.text("\n")
+            p.text("\n\n")
             p._raw(self.contract_message)
 
         p.cut()
