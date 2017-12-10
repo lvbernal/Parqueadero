@@ -236,7 +236,7 @@ namespace Parqueadero.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo. El ingreso no fue registrado.", "OK");
             }
 
             Printing = false;

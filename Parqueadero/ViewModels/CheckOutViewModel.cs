@@ -20,28 +20,20 @@ namespace Parqueadero.ViewModels
 
                 if (_currentVehicle != null)
                 {
-                    _currentVehicle.CheckOut = DateTime.Now.ToLocalTime();
+                    CurrentVehicle.CheckOut = DateTime.Now.ToLocalTime();
 
-                    VehicleType = _currentVehicle.VehicleType;
+                    VehicleType = CurrentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
                     CheckInTime = CurrentVehicle.CheckIn;
                     CheckOutTime = CurrentVehicle.CheckOut;
                     Helmets = CurrentVehicle.Helmets;
 
-                    BaseFee = Constants.GetBaseFee(CurrentVehicle.VehicleType);
-                    HelmetsFee = Constants.GetHelmetsFee() * Helmets;
+                    BaseFee = CurrentVehicle.BaseFee;
+                    HelmetsFee = CurrentVehicle.HelmetsFee;
 
-                    var difference = CheckOutTime - CheckInTime;
-                    var hours = difference.Hours;
-                    var minutes = difference.Minutes;
-
-                    if (hours > 0 && minutes <= Constants.HourToleranceInMinutes)
-                    {
-                        hours--;
-                    }
-
-                    AdditionalHours = hours;
-                    AdditionalFee = hours * Constants.GetFee(CurrentVehicle.VehicleType);
+                    AdditionalHours = CurrentVehicle.AdditionalHours;
+                    AdditionalFee = CurrentVehicle.TotalAdditionalFee;
+                    TotalFee = CurrentVehicle.Fee;
 
                     DoScan = false;
                 }
@@ -122,7 +114,6 @@ namespace Parqueadero.ViewModels
             {
                 _baseFee = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(TotalFee));
             }
         }
 
@@ -145,7 +136,6 @@ namespace Parqueadero.ViewModels
             {
                 _additionalFee = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(TotalFee));
             }
         }
 
@@ -157,7 +147,6 @@ namespace Parqueadero.ViewModels
             {
                 _helmetsFee = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(TotalFee));
             }
         }
 
@@ -172,11 +161,14 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private double _totalFee;
         public double TotalFee
         {
-            get
+            get { return _totalFee; }
+            set
             {
-                return BaseFee + AdditionalFee + HelmetsFee;
+                _totalFee = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -204,7 +196,6 @@ namespace Parqueadero.ViewModels
         {
             Printing = true;
 
-            CurrentVehicle.Fee = TotalFee;
             CurrentVehicle.Done = true;
 
             var dataService = (DataService)Application.Current.Resources["DataService"];
@@ -215,7 +206,7 @@ namespace Parqueadero.ViewModels
 
             if (!printed)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo, pero la salida fue registrada.", "OK");
             }
 
             await Application.Current.MainPage.Navigation.PopAsync();
