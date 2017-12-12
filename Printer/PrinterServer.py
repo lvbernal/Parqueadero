@@ -4,6 +4,8 @@
 
 import datetime
 import cherrypy
+from cherrypy.process.plugins import Daemonizer
+from cherrypy.process.plugins import PIDFile
 import dateutil.parser
 from escpos import printer
 
@@ -45,17 +47,24 @@ class Printer(object):
             'base_fee': 2500.0,
             'checkout': '0001-01-01T00:00:00'
         }
+
+    Create Cron
+        run command
+            sudo crontab -e
+        add to file
+            @reboot (sleep 10; python /PATH_TO_FILE/PrinterServer.py)
     """
     def __init__(self):
         contract = (
-            u"Para los efectos del contrato de depósito de vehículo que aquí se celebra, el depositante declara: "
-            u"1. Que tiene asegurado el vehículo contra todos los riesgos hasta por su valor comercial, comprometiéndose a dirigir toda reclamación a la respectiva compañía de seguros. "
+            u"Contrato de aparcamiento de vehiculos automotores\n"
+            u"Para los efectos del contrato de deposito de vehiculo que aqui se celebra, el depositante declara: "
+            u"1. Que tiene asegurado el vehiculo contra todos los riesgos hasta por su valor comercial, comprometiendose a dirigir toda reclamacion a la respectiva compania de seguros. "
             u"2. Que conoce y aprueba las condiciones de seguridad que existen en el parqueadero. "
-            u"3. Que en caso de cualquier siniestro del vehículo, el depositario sólo responde hasta por cincuenta mil pesos ($50.000) moneda corriente, como indemnización de perjuicio, que será pagadera previa sentencia en firme que establezca la responsabilidad del depositario. "
-            u"4. Que el depositario entregará el vehículo a la persona que exhiba esta boleta de parqueo, sin más indemnización ni responsabilidad para el depositario. "
-            u"5. Que el depositario tenga derecho de retención sobre el vehículo para compensarse por las expensas en la conservación de la cosa y los perjuicios que culpa del depositante haya ocasionado el depósito. "
-            u"6. Que el depositario se ajusta a los reglamentos oficiales aplicables a la operación del parqueadero.\n"
-            u"Las cláusulas anteriores fueron discutidas libremente y las acepta el depositante por el solo hecho de parquear su vehículo y no requiere de su firma para su validez.\n"
+            u"3. Que en caso de cualquier siniestro del vehiculo, el depositario solo responde hasta por cincuenta mil pesos ($50.000) moneda corriente, como indemnizacion de perjuicio, que sera pagadera previa sentencia en firme que establezca la responsabilidad del depositario. "
+            u"4. Que el depositario entregara el vehiculo a la persona que exhiba esta boleta de parqueo, sin mas indemnizacion ni responsabilidad para el depositario. "
+            u"5. Que el depositario tenga derecho de retencion sobre el vehiculo para compensarse por las expensas en la conservacion de la cosa y los perjuicios que culpa del depositante haya ocasionado el deposito. "
+            u"6. Que el depositario se ajusta a los reglamentos oficiales aplicables a la operacion del parqueadero.\n"
+            u"Las clausulas anteriores fueron discutidas libremente y las acepta el depositante por el solo hecho de parquear su vehiculo y no requiere de su firma para su validez.\n"
             u"El parqueadero no se hace responsable por cascos y chalecos que se dejen en la moto."
         )
         self.contract_message = contract.encode("GB18030")
@@ -147,12 +156,22 @@ class Printer(object):
 
         return vehicle_map[vehicle]
 
+    @staticmethod
+    def deamonize():
+        """Run cherrypy instance in background."""
+        d = Daemonizer(cherrypy.engine)
+        d.subscribe()
+        PIDFile(cherrypy.engine, 'daemon.pid').subscribe()
+
 
 if __name__ == "__main__":
     CHERRYPY_CONFIG = {
         "server.socket_host": "0.0.0.0",
-        "server.socket_port": 8000
+        "server.socket_port": 8000,
+        "log.access_file": 'log_cherry.log',
+        "log.error_file": 'log_error_cherry.log'
     }
 
     cherrypy.config.update(CHERRYPY_CONFIG)
+    Printer.deamonize()
     cherrypy.quickstart(Printer())
