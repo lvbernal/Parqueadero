@@ -78,7 +78,7 @@ namespace Parqueadero.Services
             try
             {
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery());
+                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Constants.ParkingLotId));
             }
             catch (MobileServicePushFailedException err)
             {
