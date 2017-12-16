@@ -32,13 +32,7 @@ namespace Parqueadero.ViewModels
 
                 if (_currentVehicle != null)
                 {
-                    CurrentVehicle.CheckOut = DateTime.Now.ToLocalTime();
-                    var feeDetails = Parking.CalculateFeeDetails(CurrentVehicle);
-                    CurrentVehicle.Fee = feeDetails.TotalFee;
-                    CurrentVehicle.BaseFee = feeDetails.BaseFee;
-                    CurrentVehicle.AdditionalHours = feeDetails.AdditionalHours;
-                    CurrentVehicle.AdditionalFee = feeDetails.AdditionalFee;
-                    CurrentVehicle.HelmetsFee = feeDetails.HelmetsFee;
+                    CurrentVehicle = Parking.AddCheckOutInfoForVehicle(CurrentVehicle);
 
                     VehicleType = CurrentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
@@ -213,7 +207,6 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-			CurrentVehicle.Done = true;
             await Data.SaveVehicle(CurrentVehicle);
             var printed = await Print();
 

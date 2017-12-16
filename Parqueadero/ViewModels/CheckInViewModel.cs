@@ -244,17 +244,12 @@ namespace Parqueadero.ViewModels
         {
             VehicleRecord vehicle = new VehicleRecord()
             {
-                ParkingLotId = Parking.Id,
                 Plate = Plate,
                 VehicleType = SelectedVehicle.VehicleType,
-                CheckIn = DateTime.Now.ToLocalTime(),
-                Helmets = Helmets,
-                BaseFee = Parking.GetBaseFee(SelectedVehicle.VehicleType),
-                AdditionalFee = Parking.GetFee(SelectedVehicle.VehicleType),
-                HelmetsFee = Parking.GetHelmetsFee()
+                Helmets = Helmets
             };
 
-            return vehicle;
+            return Parking.AddCheckInInfoForVehicle(vehicle);
         }
 
         private async Task<bool> Print(VehicleRecord vehicle)
