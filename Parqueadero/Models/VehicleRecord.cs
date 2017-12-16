@@ -44,75 +44,45 @@ namespace Parqueadero.Models
         [Version]
         public string Version { get; set; }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "total_fee")]
-        public double TotalFee
+        public double CalculateFee()
         {
-            get
-            {
-                var _fee = BaseFee + TotalAdditionalFee + HelmetsFee;
-                Fee = _fee > 0 ? _fee : 0;
-                return Fee;
-            }
+            var _fee = GetBaseFee() + GetTotalAdditionalFee() + GetHelmetsFee();
+            Fee = _fee > 0 ? _fee : 0;
+            return Fee;
         }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "base_fee")]
-        public double BaseFee
+        public double GetBaseFee()
         {
-            get
-            {
-                return Constants.GetBaseFee(VehicleType);
-            }
+            return Constants.GetBaseFee(VehicleType);
         }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "additional_fee")]
-        public double AdditionalFee
+        public double GetAdditionalFee()
         {
-            get
-            {
-                return Constants.GetFee(VehicleType);
-            }
+            return Constants.GetFee(VehicleType);
         }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "helmets_fee")]
-        public double HelmetsFee
+        public double GetHelmetsFee()
         {
-            get
-            {
-                return Constants.GetHelmetsFee() * Helmets;
-            }
+            return Constants.GetHelmetsFee() * Helmets;
         }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "additional_hours")]
-        public int AdditionalHours
+        public int GetAdditionalHours()
         {
-            get
+            var difference = CheckOut - CheckIn;
+            var hours = difference.Hours;
+            var minutes = difference.Minutes;
+
+            if (hours > 0 && minutes <= Constants.HourToleranceInMinutes)
             {
-                var difference = CheckOut - CheckIn;
-                var hours = difference.Hours;
-                var minutes = difference.Minutes;
-
-                if (hours > 0 && minutes <= Constants.HourToleranceInMinutes)
-                {
-                    hours--;
-                }
-
-                return hours > 0 ? hours : 0;
+                hours--;
             }
+
+            return hours > 0 ? hours : 0;
         }
 
-        [IgnoreProperty]
-        [JsonProperty(PropertyName = "total_additional_fee")]
-        public double TotalAdditionalFee
+        public double GetTotalAdditionalFee()
         {
-            get
-            {
-                return AdditionalHours * AdditionalFee;
-            }
+            return GetAdditionalHours() * GetAdditionalFee();
         }
     }
 }
