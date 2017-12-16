@@ -3,11 +3,23 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using Parqueadero.Pages;
 using Parqueadero.Services;
+using Parqueadero.Models;
 
 namespace Parqueadero.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        private ParkingLot _parking;
+        public ParkingLot Parking
+        {
+            get { return _parking; }
+            set
+            {
+                _parking = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private CheckInViewModel _checkIn;
         public CheckInViewModel CheckIn
         {
@@ -34,26 +46,28 @@ namespace Parqueadero.ViewModels
         {
             DoCheckInCommand = new Command(DoCheckIn);
             DoCheckOutCommand = new Command(DoCheckOut);
+
+            Parking = new ParkingLot();
         }
 
         public Command DoCheckInCommand { get; }
         public async void DoCheckIn()
         {
-            CheckIn = new CheckInViewModel();
+            CheckIn = new CheckInViewModel() { Parking = Parking };
             await Application.Current.MainPage.Navigation.PushAsync(new CheckInPage());
         }
 
         public Command DoCheckOutCommand { get; }
         public async void DoCheckOut()
         {
-            CheckOut = new CheckOutViewModel();
+            CheckOut = new CheckOutViewModel() { Parking = Parking };
             await Application.Current.MainPage.Navigation.PushAsync(new CheckOutPage());
         }
 
         public async Task ReloadVehicles()
         {
             var dataService = (DataService)Application.Current.Resources["DataService"];
-            var vehicles = await dataService.GetVehiclesAsync();
+            await dataService.GetVehiclesAsync();
         }
     }
 }

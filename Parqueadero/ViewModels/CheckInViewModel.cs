@@ -4,61 +4,24 @@ using Xamarin.Forms;
 using Parqueadero.Models;
 using Parqueadero.Helpers;
 using Parqueadero.Services;
+using System.Threading.Tasks;
 
 namespace Parqueadero.ViewModels
 {
     public class CheckInViewModel : BindableBase
     {
-        private int _helmets = 0;
-        public int Helmets
+        private ParkingLot _parking;
+        public ParkingLot Parking
         {
-            get { return _helmets; }
+            get { return _parking; }
             set
             {
-                _helmets = value;
+                _parking = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(Fee));
             }
         }
 
-        private string _plate = "";
-        public string Plate
-        {
-            get { return _plate; }
-            set
-            {
-                _plate = value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged(nameof(IsValid));
-            }
-        }
-
-        public string Fee
-        {
-            get
-            {
-                var helmetsRate = Constants.HelmetsBase * Helmets;
-
-                if (helmetsRate > 0)
-                {
-                    var format = "${0} + {1}/h+, + ${2}";
-                    return String.Format(format, SelectedVehicle.BaseFee, SelectedVehicle.Fee, helmetsRate);
-                }
-                else
-                {
-                    var format = "${0} + {1}/h+";
-                    return String.Format(format, SelectedVehicle.BaseFee, SelectedVehicle.Fee);
-                }
-            }
-        }
-
-        private bool IsValid
-        {
-            get
-            {
-                return Plate.Length > 0;
-            }
-        }
+        private ObservableCollection<VehicleOptionViewModel> VehicleOptions { get; set; }
 
         private VehicleOptionViewModel _carOption;
         public VehicleOptionViewModel CarOption
@@ -124,27 +87,72 @@ namespace Parqueadero.ViewModels
                 _selectedVehicle = value;
                 NotifyPropertyChanged();
                 NotifyPropertyChanged(nameof(Fee));
+                NotifyPropertyChanged(nameof(IsValid));
             }
         }
 
-        private ObservableCollection<VehicleOptionViewModel> _vehicleOptions;
-        public ObservableCollection<VehicleOptionViewModel> VehicleOptions
+        private int _helmets = 0;
+        public int Helmets
         {
-            get { return _vehicleOptions; }
+            get { return _helmets; }
             set
             {
-                _vehicleOptions = value;
+                _helmets = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(Fee));
             }
         }
 
-        private bool _printing;
-        public bool Printing
+        private string _plate = "";
+        public string Plate
         {
-            get { return _printing; }
+            get { return _plate; }
             set
             {
-                _printing = value;
+                _plate = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsValid));
+            }
+        }
+
+        public string Fee
+        {
+            get
+            {
+                if (SelectedVehicle == null) { return ""; }
+
+                var helmetsRate = Parking.GetHelmetsFee() * Helmets;
+                var baseFee = Parking.GetBaseFee(SelectedVehicle.VehicleType);
+                var fee = Parking.GetFee(SelectedVehicle.VehicleType);
+
+                if (helmetsRate > 0)
+                {
+                    var format = "${0} + {1}/h+, + ${2}";
+                    return String.Format(format, baseFee, fee, helmetsRate);
+                }
+                else
+                {
+                    var format = "${0} + {1}/h+";
+                    return String.Format(format, baseFee, fee);
+                }
+            }
+        }
+
+        private bool IsValid
+        {
+            get
+            {
+                return Plate.Length > 0 && SelectedVehicle != null;
+            }
+        }
+
+        private bool _savingAndPrinting;
+        public bool SavingAndPrinting
+        {
+            get { return _savingAndPrinting; }
+            set
+            {
+                _savingAndPrinting = value;
                 NotifyPropertyChanged();
                 CheckInCommand.ChangeCanExecute();
             }
@@ -154,13 +162,17 @@ namespace Parqueadero.ViewModels
         {
             AddHelmetCommand = new Command(AddHelmet);
             RemoveHelmetCommand = new Command(RemoveHelmet);
-            CheckInCommand = new Command(CheckIn, () => !Printing);
+            CheckInCommand = new Command(CheckIn, () => !SavingAndPrinting);
+            InitializeVehicleOptions();
+        }
 
-            CarOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Car, BaseFee = Constants.CarBase, Fee = Constants.CarFee };
-            PickupOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Pickup, BaseFee = Constants.PickupBase, Fee = Constants.PickupFee };
-            TruckOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Truck, BaseFee = Constants.TruckBase, Fee = Constants.TruckFee };
-            MotorbikeOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Motorbike, BaseFee = Constants.MotorbikeBase, Fee = Constants.MotorbikeFee };
-            BikeOption = new VehicleOptionViewModel() { VehicleType = VehicleRecord.Bike, BaseFee = Constants.BikeBase, Fee = Constants.BikeFee };
+        private void InitializeVehicleOptions()
+        {
+            CarOption = new VehicleOptionViewModel() { VehicleType = Constants.Car };
+            PickupOption = new VehicleOptionViewModel() { VehicleType = Constants.Pickup };
+            TruckOption = new VehicleOptionViewModel() { VehicleType = Constants.Truck };
+            MotorbikeOption = new VehicleOptionViewModel() { VehicleType = Constants.Motorbike };
+            BikeOption = new VehicleOptionViewModel() { VehicleType = Constants.Bike };
 
             CarOption.PropertyChanged += (s, e) => ValidateSelection(CarOption);
             PickupOption.PropertyChanged += (s, e) => ValidateSelection(PickupOption);
@@ -172,8 +184,6 @@ namespace Parqueadero.ViewModels
             {
                 CarOption, PickupOption, TruckOption, MotorbikeOption, BikeOption
             };
-
-            CarOption.Selected = true;
         }
 
         private void ValidateSelection(VehicleOptionViewModel vehicle)
@@ -207,39 +217,51 @@ namespace Parqueadero.ViewModels
         public Command CheckInCommand { get; }
         public async void CheckIn()
         {
-            Printing = true;
+            SavingAndPrinting = true;
 
-            if (!IsValid)
+            if (IsValid)
             {
-                Printing = false;
-                return;
+                var vehicle = BuildVehicle();
+                var printed = await Print(vehicle);
+
+                if (printed)
+                {
+                    await Save(vehicle);
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Alerta", "No fue posible imprimir el recibo. El ingreso no fue registrado.", "OK");
+                }
             }
 
+            SavingAndPrinting = false;
+        }
+
+        private VehicleRecord BuildVehicle()
+        {
             VehicleRecord vehicle = new VehicleRecord()
             {
-                ParkingLotId = Constants.ParkingLotId,
+                ParkingLotId = Parking.Id,
                 Plate = Plate,
                 VehicleType = SelectedVehicle.VehicleType,
                 CheckIn = DateTime.Now.ToLocalTime(),
                 Helmets = Helmets
             };
 
+            return vehicle;
+        }
+
+        private async Task<bool> Print(VehicleRecord vehicle)
+        {
             var printService = (PrintService)Application.Current.Resources["PrintService"];
-            var printed = await printService.PrintCheckIn(vehicle);
+            return await printService.PrintCheckIn(vehicle);
+        }
 
-            if (printed)
-            {
-                var dataService = (DataService)Application.Current.Resources["DataService"];
-                await dataService.SaveVehicle(vehicle);
-
-                await Application.Current.MainPage.Navigation.PopAsync();
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", "No fue posible imprimir el recibo. El ingreso no fue registrado.", "OK");
-            }
-
-            Printing = false;
+        private async Task Save(VehicleRecord vehicle)
+        {
+            var dataService = (DataService)Application.Current.Resources["DataService"];
+            await dataService.SaveVehicle(vehicle);
         }
     }
 }
