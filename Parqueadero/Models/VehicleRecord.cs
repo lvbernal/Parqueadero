@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.WindowsAzure.MobileServices;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using Parqueadero.Helpers;
 

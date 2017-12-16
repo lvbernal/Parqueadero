@@ -12,7 +12,6 @@ namespace Parqueadero.Pages
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             context = (MainViewModel)BindingContext;
-
         }
 
         protected override void OnAppearing()
