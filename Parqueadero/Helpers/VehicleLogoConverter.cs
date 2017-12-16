@@ -8,8 +8,15 @@ namespace Parqueadero.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var logo = (string)value + "Logo";
-            return Application.Current.Resources[logo];
+            string vehicle = (string)value;
+
+            if (vehicle != null)
+            {
+                var logo = vehicle + "Logo";
+                return Application.Current.Resources[logo];
+            }
+
+            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -232,8 +232,7 @@ namespace Parqueadero.ViewModels
 
         public async Task<bool> LoadVehicle(string code)
         {
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            var vehicle = await dataService.GetVehicle(code);
+            var vehicle = await Data.GetVehicle(code);
 
             if (vehicle != null)
             {
