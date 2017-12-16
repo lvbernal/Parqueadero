@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using Parqueadero.Helpers;
 
@@ -38,18 +39,24 @@ namespace Parqueadero.Models
         public bool Done { get; set; }
 
         [JsonProperty(PropertyName = "fee")]
-        public double Fee
-        {
-            get
-            {
-                var fee = BaseFee + TotalAdditionalFee + HelmetsFee;
-                return fee > 0 ? fee : 0;
-            }
-        }
+        public double Fee { get; set; }
 
         [Version]
         public string Version { get; set; }
 
+        [IgnoreProperty]
+        [JsonProperty(PropertyName = "total_fee")]
+        public double TotalFee
+        {
+            get
+            {
+                var _fee = BaseFee + TotalAdditionalFee + HelmetsFee;
+                Fee = _fee > 0 ? _fee : 0;
+                return Fee;
+            }
+        }
+
+        [IgnoreProperty]
         [JsonProperty(PropertyName = "base_fee")]
         public double BaseFee
         {
@@ -59,6 +66,7 @@ namespace Parqueadero.Models
             }
         }
 
+        [IgnoreProperty]
         [JsonProperty(PropertyName = "additional_fee")]
         public double AdditionalFee
         {
@@ -68,6 +76,7 @@ namespace Parqueadero.Models
             }
         }
 
+        [IgnoreProperty]
         [JsonProperty(PropertyName = "helmets_fee")]
         public double HelmetsFee
         {
@@ -77,6 +86,7 @@ namespace Parqueadero.Models
             }
         }
 
+        [IgnoreProperty]
         [JsonProperty(PropertyName = "additional_hours")]
         public int AdditionalHours
         {
@@ -95,6 +105,7 @@ namespace Parqueadero.Models
             }
         }
 
+        [IgnoreProperty]
         [JsonProperty(PropertyName = "total_additional_fee")]
         public double TotalAdditionalFee
         {
