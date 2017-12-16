@@ -32,7 +32,6 @@
             <!-- Services -->
             <infra:InstanceLocator x:Key="Locator"></infra:InstanceLocator>
             <services:DataService x:Key="DataService"></services:DataService>
-            <services:PrintService x:Key="PrintService"></services:PrintService>
 
             <!-- Converters -->
             <helpers:PlateConverter x:Key="PlateConverter"></helpers:PlateConverter>

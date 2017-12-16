@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Parqueadero.Services;
 using Parqueadero.Models;
-using Parqueadero.Helpers;
 
 namespace Parqueadero.ViewModels
 {
@@ -33,14 +32,14 @@ namespace Parqueadero.ViewModels
                 {
                     CurrentVehicle.CheckOut = DateTime.Now.ToLocalTime();
                     var feeDetails = Parking.CalculateFeeDetails(CurrentVehicle);
-					CurrentVehicle.Fee = feeDetails.TotalFee;
+                    CurrentVehicle.Fee = feeDetails.TotalFee;
 
                     VehicleType = CurrentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
                     CheckInTime = CurrentVehicle.CheckIn;
                     CheckOutTime = CurrentVehicle.CheckOut;
                     Helmets = CurrentVehicle.Helmets;
-					TotalFee = CurrentVehicle.Fee;
+                    TotalFee = CurrentVehicle.Fee;
 
                     BaseFee = feeDetails.BaseFee;
                     HelmetsFee = feeDetails.HelmetsFee;
@@ -208,7 +207,7 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-			CurrentVehicle.Done = true;
+            CurrentVehicle.Done = true;
 
             await Save();
             var printed = await Print();
@@ -231,7 +230,7 @@ namespace Parqueadero.ViewModels
 
         private async Task<bool> Print()
         {
-            var printService = (PrintService)Application.Current.Resources["PrintService"];
+            var printService = new PrintService(Parking.PrinterUrl);
             return await printService.PrintCheckOut(CurrentVehicle);
         }
 

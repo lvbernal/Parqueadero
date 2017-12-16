@@ -5,12 +5,17 @@ using Parqueadero.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text;
-using Parqueadero.Helpers;
 
 namespace Parqueadero.Services
 {
     public class PrintService
     {
+        private string _printerUrl;
+        public PrintService(string printerUrl)
+        {
+            _printerUrl = printerUrl;
+        }
+
         public async Task<bool> PrintCheckIn(VehicleRecord vehicle)
         {
             return await Print(vehicle);
@@ -33,7 +38,7 @@ namespace Parqueadero.Services
                     string content = JsonConvert.SerializeObject(vehicle, jsonSettings);
                     StringContent body = new StringContent(content, Encoding.UTF8, "application/json");
 
-                    var result = await client.PostAsync(Constants.PrinterAddress, body);
+                    var result = await client.PostAsync(_printerUrl, body);
                     var data = await result.Content.ReadAsStringAsync();
 
                     return result.IsSuccessStatusCode;

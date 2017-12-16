@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Parqueadero.Models;
 using Parqueadero.Helpers;
 using Parqueadero.Services;
-using System.Threading.Tasks;
 
 namespace Parqueadero.ViewModels
 {
@@ -254,7 +254,7 @@ namespace Parqueadero.ViewModels
 
         private async Task<bool> Print(VehicleRecord vehicle)
         {
-            var printService = (PrintService)Application.Current.Resources["PrintService"];
+            var printService = new PrintService(Parking.PrinterUrl);
             return await printService.PrintCheckIn(vehicle);
         }
 
