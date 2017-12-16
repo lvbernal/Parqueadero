@@ -17,9 +17,9 @@ namespace Parqueadero.Services
         {
             get { return client; }
         }
-  
+
         private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
-		private ParkingLot _parking;
+        private ParkingLot _parking;
 
 
         public DataService(ParkingLot parking)
@@ -42,8 +42,9 @@ namespace Parqueadero.Services
                 var vCollection = new ObservableCollection<VehicleRecord>(vehicles);
                 return vCollection;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -55,8 +56,9 @@ namespace Parqueadero.Services
                 var results = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done && v.Plate == plate).ToListAsync();
                 return results.Count > 0 ? results[0] : null;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
@@ -82,9 +84,11 @@ namespace Parqueadero.Services
             try
             {
                 var query = vehicleTable.CreateQuery().Where(v => v.ParkingLotId == _parking.Id && !v.Done);
-                await vehicleTable.PullAsync("allVehicleRecords", query);
+                var purgeQuery = vehicleTable.CreateQuery().Where(v => v.Done);
+
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done));
+                await vehicleTable.PullAsync("allVehicleRecords", query);
+                await vehicleTable.PurgeAsync(purgeQuery);
             }
             catch (MobileServicePushFailedException exc)
             {
@@ -92,11 +96,6 @@ namespace Parqueadero.Services
                 {
                     syncErrors = exc.PushResult.Errors;
                 }
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine("Other error");
-                Console.WriteLine(exc.StackTrace);
             }
 
             if (syncErrors != null)
