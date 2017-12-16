@@ -248,7 +248,10 @@ namespace Parqueadero.ViewModels
                 Plate = Plate,
                 VehicleType = SelectedVehicle.VehicleType,
                 CheckIn = DateTime.Now.ToLocalTime(),
-                Helmets = Helmets
+                Helmets = Helmets,
+                BaseFee = Parking.GetBaseFee(SelectedVehicle.VehicleType),
+                AdditionalFee = Parking.GetFee(SelectedVehicle.VehicleType),
+                HelmetsFee = Parking.GetHelmetsFee()
             };
 
             return vehicle;

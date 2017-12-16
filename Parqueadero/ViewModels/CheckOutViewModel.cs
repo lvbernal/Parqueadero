@@ -35,6 +35,10 @@ namespace Parqueadero.ViewModels
                     CurrentVehicle.CheckOut = DateTime.Now.ToLocalTime();
                     var feeDetails = Parking.CalculateFeeDetails(CurrentVehicle);
                     CurrentVehicle.Fee = feeDetails.TotalFee;
+                    CurrentVehicle.BaseFee = feeDetails.BaseFee;
+                    CurrentVehicle.AdditionalHours = feeDetails.AdditionalHours;
+                    CurrentVehicle.AdditionalFee = feeDetails.AdditionalFee;
+                    CurrentVehicle.HelmetsFee = feeDetails.HelmetsFee;
 
                     VehicleType = CurrentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
@@ -43,10 +47,10 @@ namespace Parqueadero.ViewModels
                     Helmets = CurrentVehicle.Helmets;
                     TotalFee = CurrentVehicle.Fee;
 
-                    BaseFee = feeDetails.BaseFee;
-                    HelmetsFee = feeDetails.HelmetsFee;
-                    AdditionalHours = feeDetails.AdditionalHours;
-                    AdditionalFee = feeDetails.AdditionalFee;
+                    BaseFee = CurrentVehicle.BaseFee;
+                    HelmetsFee = CurrentVehicle.HelmetsFee;
+                    AdditionalHours = CurrentVehicle.AdditionalHours;
+                    AdditionalFee = CurrentVehicle.AdditionalFee;
 
                     DoScan = false;
                 }
@@ -209,8 +213,7 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-            CurrentVehicle.Done = true;
-
+			CurrentVehicle.Done = true;
             await Data.SaveVehicle(CurrentVehicle);
             var printed = await Print();
 
