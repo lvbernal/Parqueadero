@@ -5,7 +5,8 @@
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
     xmlns:infra="clr-namespace:Parqueadero.Infrastructure" 
     xmlns:helpers="clr-namespace:Parqueadero.Helpers" 
-    xmlns:services="clr-namespace:Parqueadero.Services" 
+    xmlns:services="clr-namespace:Parqueadero.Services"
+    xmlns:system="clr-namespace:System"
     x:Class="Parqueadero.App">
     
 	<Application.Resources>
@@ -28,17 +29,25 @@
                 <Setter Property="WidthRequest" Value="80" />
             </Style>
 
-            <Color x:Key="UnselectedVehicleColor">#3b3f42</Color>
-            <Color x:Key="SelectedVehicleColor">#56b9d0</Color>
-            
+            <!-- Services -->
             <infra:InstanceLocator x:Key="Locator"></infra:InstanceLocator>
             <services:DataService x:Key="DataService"></services:DataService>
             <services:PrintService x:Key="PrintService"></services:PrintService>
 
+            <!-- Converters -->
             <helpers:PlateConverter x:Key="PlateConverter"></helpers:PlateConverter>
             <helpers:VehicleOptionConverter x:Key="VehicleOptionConverter"></helpers:VehicleOptionConverter>
             <helpers:VehicleLogoConverter x:Key="VehicleLogoConverter"></helpers:VehicleLogoConverter>
             <helpers:BooleanNegationConverter x:Key="BooleanNegationConverter"></helpers:BooleanNegationConverter>
+            
+            <!-- Style constants -->
+            <Color x:Key="unselectedVehicleColor">#3b3f42</Color>
+            <Color x:Key="selectedVehicleColor">#56b9d0</Color>
+            <system:String x:Key="carLogo">vcar.png</system:String>
+            <system:String x:Key="pickupLogo">vpickup.png</system:String>
+            <system:String x:Key="truckLogo">vtruck.png</system:String>
+            <system:String x:Key="motorbikeLogo">vmotorbike.png</system:String>
+            <system:String x:Key="bikeLogo">vbike.png</system:String>
             
         </ResourceDictionary>
 	</Application.Resources>

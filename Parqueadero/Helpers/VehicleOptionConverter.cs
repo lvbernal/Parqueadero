@@ -8,7 +8,7 @@ namespace Parqueadero.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var color = (bool)value ? "SelectedVehicleColor" : "UnselectedVehicleColor";
+            var color = (bool)value ? "selectedVehicleColor" : "unselectedVehicleColor";
             return Application.Current.Resources[color];
         }
 
