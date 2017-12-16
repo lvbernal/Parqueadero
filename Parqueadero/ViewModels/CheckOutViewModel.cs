@@ -9,6 +9,17 @@ namespace Parqueadero.ViewModels
 {
     public class CheckOutViewModel : BindableBase
     {
+        private ParkingLot _parking;
+        public ParkingLot Parking
+        {
+            get { return _parking; }
+            set
+            {
+                _parking = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private VehicleRecord _currentVehicle;
         public VehicleRecord CurrentVehicle
         {
@@ -21,19 +32,20 @@ namespace Parqueadero.ViewModels
                 if (_currentVehicle != null)
                 {
                     CurrentVehicle.CheckOut = DateTime.Now.ToLocalTime();
+                    var feeDetails = Parking.CalculateFeeDetails(CurrentVehicle);
+					CurrentVehicle.Fee = feeDetails.TotalFee;
 
                     VehicleType = CurrentVehicle.VehicleType;
                     Plate = CurrentVehicle.Plate;
                     CheckInTime = CurrentVehicle.CheckIn;
                     CheckOutTime = CurrentVehicle.CheckOut;
                     Helmets = CurrentVehicle.Helmets;
+					TotalFee = CurrentVehicle.Fee;
 
-                    BaseFee = CurrentVehicle.BaseFee;
-                    HelmetsFee = CurrentVehicle.HelmetsFee;
-
-                    AdditionalHours = CurrentVehicle.AdditionalHours;
-                    AdditionalFee = CurrentVehicle.TotalAdditionalFee;
-                    TotalFee = CurrentVehicle.Fee;
+                    BaseFee = feeDetails.BaseFee;
+                    HelmetsFee = feeDetails.HelmetsFee;
+                    AdditionalHours = feeDetails.AdditionalHours;
+                    AdditionalFee = feeDetails.AdditionalFee;
 
                     DoScan = false;
                 }
@@ -172,13 +184,13 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private bool _printing;
-        public bool Printing
+        private bool _savingAndPrinting;
+        public bool SavingAndPrinting
         {
-            get { return _printing; }
+            get { return _savingAndPrinting; }
             set
             {
-                _printing = value;
+                _savingAndPrinting = value;
                 NotifyPropertyChanged();
                 CheckOutCommand.ChangeCanExecute();
             }
@@ -186,7 +198,7 @@ namespace Parqueadero.ViewModels
 
         public CheckOutViewModel()
         {
-            CheckOutCommand = new Command(CheckOut, () => !Printing);
+            CheckOutCommand = new Command(CheckOut, () => !SavingAndPrinting);
             CurrentVehicle = null;
             DoScan = true;
         }
@@ -194,15 +206,12 @@ namespace Parqueadero.ViewModels
         public Command CheckOutCommand { get; }
         public async void CheckOut()
         {
-            Printing = true;
+            SavingAndPrinting = true;
 
-            CurrentVehicle.Done = true;
+			CurrentVehicle.Done = true;
 
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            await dataService.SaveVehicle(CurrentVehicle);
-
-            var printService = (PrintService)Application.Current.Resources["PrintService"];
-            var printed = await printService.PrintCheckOut(CurrentVehicle);
+            await Save();
+            var printed = await Print();
 
             if (!printed)
             {
@@ -211,8 +220,19 @@ namespace Parqueadero.ViewModels
 
             await Application.Current.MainPage.Navigation.PopAsync();
 
-            NoReceiptPlate = "";
-            Printing = false;
+            SavingAndPrinting = false;
+        }
+
+        private async Task Save()
+        {
+            var dataService = (DataService)Application.Current.Resources["DataService"];
+            await dataService.SaveVehicle(CurrentVehicle);
+        }
+
+        private async Task<bool> Print()
+        {
+            var printService = (PrintService)Application.Current.Resources["PrintService"];
+            return await printService.PrintCheckOut(CurrentVehicle);
         }
 
         public async Task<bool> LoadVehicle(string code)

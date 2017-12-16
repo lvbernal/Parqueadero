@@ -55,6 +55,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BooleanNegationConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PrintService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ParkingLot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\FeeCheckOutResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />

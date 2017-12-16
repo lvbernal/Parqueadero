@@ -87,18 +87,27 @@ namespace Parqueadero.Models
             return HelmetsBase;
         }
 
-        public double CalculateFee(VehicleRecord vehicle)
+        public FeeCheckOutResult CalculateFeeDetails(VehicleRecord vehicle)
         {
-            var fee = GetBaseFee(vehicle.VehicleType) + CalculateAdditionalFee(vehicle) + CalculateHelmetsFee(vehicle);
-            return fee > 0 ? fee : 0;
+            var baseFee = GetBaseFee(vehicle.VehicleType);
+            var additionalHours = CalculateAdditionalHours(vehicle);
+            var additionalFee = additionalHours * GetFee(vehicle.VehicleType);
+            var helmetsFee = CalculateHelmetsFee(vehicle);
+
+            var totalFee = baseFee + additionalFee + helmetsFee;
+            totalFee = totalFee > 0 ? totalFee : 0;
+
+            return new FeeCheckOutResult()
+            {
+                BaseFee = baseFee,
+                AdditionalHours = additionalHours,
+                AdditionalFee = additionalFee,
+                HelmetsFee = helmetsFee,
+                TotalFee = totalFee
+            };
         }
 
-        public double CalculateAdditionalFee(VehicleRecord vehicle)
-        {
-            return CalculateAdditionalHours(vehicle) * GetFee(vehicle.VehicleType);
-        }
-
-        public int CalculateAdditionalHours(VehicleRecord vehicle)
+        private int CalculateAdditionalHours(VehicleRecord vehicle)
         {
             var difference = vehicle.CheckOut - vehicle.CheckIn;
             var hours = difference.Hours;
@@ -112,7 +121,7 @@ namespace Parqueadero.Models
             return hours > 0 ? hours : 0;
         }
 
-        public double CalculateHelmetsFee(VehicleRecord vehicle)
+        private double CalculateHelmetsFee(VehicleRecord vehicle)
         {
             return GetHelmetsFee() * vehicle.Helmets;
         }
