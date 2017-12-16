@@ -6,7 +6,7 @@
     xmlns:infra="clr-namespace:Parqueadero.Infrastructure" 
     xmlns:helpers="clr-namespace:Parqueadero.Helpers" 
     xmlns:services="clr-namespace:Parqueadero.Services"
-    xmlns:system="clr-namespace:System"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     x:Class="Parqueadero.App">
     
 	<Application.Resources>

@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-
-check in by Chinnaking from the Noun Project
-checkout by Chinnaking from the Noun Project
-Car by jeff from the Noun Project
-Truck by jeff from the Noun Project
-Truck by jeff from the Noun Project
-ATV by jeff from the Noun Project
-Bicycle by jeff from the Noun Project
-Helmet by Gabriel Ciccariello from the Noun Project
-subtraction by Marta Ambrosetti from the Noun Project
-addition by Marta Ambrosetti from the Noun Project
-
-Colors used
-https://color.adobe.com/Copy-of-Picture-book-color-theme-10127683/
-
--->
-
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Parqueadero" 
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
     x:Class="Parqueadero.Pages.MainPage"
     BindingContext="{Binding Main, Source={StaticResource Locator}}">
@@ -45,9 +25,6 @@ https://color.adobe.com/Copy-of-Picture-book-color-theme-10127683/
                 </controls:CircleImage.GestureRecognizers>
             </controls:CircleImage>
             
-        </StackLayout>
-
-        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,36,0,0">
         </StackLayout>
     </StackLayout>
     
