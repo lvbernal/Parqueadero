@@ -20,6 +20,8 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        public DataService Data { get; set; }
+
         private CheckInViewModel _checkIn;
         public CheckInViewModel CheckIn
         {
@@ -42,32 +44,44 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private bool loadingVehicles = false;
+
         public MainViewModel()
         {
             DoCheckInCommand = new Command(DoCheckIn);
             DoCheckOutCommand = new Command(DoCheckOut);
 
             Parking = new ParkingLot();
+            Data = new DataService(Parking);
+
+            SyncVehicles();
         }
 
         public Command DoCheckInCommand { get; }
         public async void DoCheckIn()
         {
-            CheckIn = new CheckInViewModel() { Parking = Parking };
+            SyncVehicles();
+            CheckIn = new CheckInViewModel() { Parking = Parking, Data = Data };
             await Application.Current.MainPage.Navigation.PushAsync(new CheckInPage());
         }
 
         public Command DoCheckOutCommand { get; }
         public async void DoCheckOut()
         {
-            CheckOut = new CheckOutViewModel() { Parking = Parking };
+            SyncVehicles();
+            CheckOut = new CheckOutViewModel() { Parking = Parking, Data = Data };
             await Application.Current.MainPage.Navigation.PushAsync(new CheckOutPage());
         }
 
-        public async Task ReloadVehicles()
+
+        public async Task SyncVehicles()
         {
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            await dataService.GetVehiclesAsync();
+            if (!loadingVehicles)
+            {
+                loadingVehicles = true;
+                await Data.SyncAsync();
+                loadingVehicles = false;
+            }
         }
     }
 }

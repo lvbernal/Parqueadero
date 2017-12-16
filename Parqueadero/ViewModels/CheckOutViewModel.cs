@@ -19,6 +19,8 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        public DataService Data { get; set; }
+
         private VehicleRecord _currentVehicle;
         public VehicleRecord CurrentVehicle
         {
@@ -209,7 +211,7 @@ namespace Parqueadero.ViewModels
 
             CurrentVehicle.Done = true;
 
-            await Save();
+            await Data.SaveVehicle(CurrentVehicle);
             var printed = await Print();
 
             if (!printed)
@@ -220,12 +222,6 @@ namespace Parqueadero.ViewModels
             await Application.Current.MainPage.Navigation.PopAsync();
 
             SavingAndPrinting = false;
-        }
-
-        private async Task Save()
-        {
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            await dataService.SaveVehicle(CurrentVehicle);
         }
 
         private async Task<bool> Print()

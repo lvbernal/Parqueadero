@@ -13,15 +13,18 @@ namespace Parqueadero.Services
     public class DataService
     {
         private MobileServiceClient client;
-        private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
-
         public MobileServiceClient Client
         {
             get { return client; }
         }
+  
+        private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
+		private ParkingLot _parking;
 
-        public DataService()
+
+        public DataService(ParkingLot parking)
         {
+            _parking = parking;
             client = new MobileServiceClient(Constants.ApplicationURL);
 
             var store = new MobileServiceSQLiteStore("parqueaderostore.db");
@@ -35,24 +38,21 @@ namespace Parqueadero.Services
         {
             try
             {
-                await SyncAsync();
-                IEnumerable<VehicleRecord> vehicles = await vehicleTable.Where(v => v.ParkingLotId == Constants.ParkingLotId && !v.Done).ToEnumerableAsync();
-                return new ObservableCollection<VehicleRecord>(vehicles);
+                IEnumerable<VehicleRecord> vehicles = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done).ToEnumerableAsync();
+                var vCollection = new ObservableCollection<VehicleRecord>(vehicles);
+                return vCollection;
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine("There was an error loading vehicles." + e.Message);
+                return null;
             }
-
-            return null;
         }
 
         public async Task<VehicleRecord> GetVehicle(string plate)
         {
             try
             {
-                await SyncAsync();
-                var results = await vehicleTable.Where(v => v.ParkingLotId == Constants.ParkingLotId && !v.Done && v.Plate == plate).ToListAsync();
+                var results = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done && v.Plate == plate).ToListAsync();
                 return results.Count > 0 ? results[0] : null;
             }
             catch
@@ -71,20 +71,48 @@ namespace Parqueadero.Services
             {
                 await vehicleTable.UpdateAsync(vehicle);
             }
+
+            await SyncAsync();
         }
 
         public async Task SyncAsync()
         {
+            ReadOnlyCollection<MobileServiceTableOperationError> syncErrors = null;
+
             try
             {
+                var query = vehicleTable.CreateQuery().Where(v => v.ParkingLotId == _parking.Id && !v.Done);
+                await vehicleTable.PullAsync("allVehicleRecords", query);
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Constants.ParkingLotId));
+                await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done));
             }
-            catch (MobileServicePushFailedException err)
+            catch (MobileServicePushFailedException exc)
             {
-                foreach (var e in err.PushResult.Errors)
+                if (exc.PushResult != null)
                 {
-                    Console.WriteLine(e.TableName + " " + e.RawResult);
+                    syncErrors = exc.PushResult.Errors;
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Other error");
+                Console.WriteLine(exc.StackTrace);
+            }
+
+            if (syncErrors != null)
+            {
+                foreach (var error in syncErrors)
+                {
+                    if (error.OperationKind == MobileServiceTableOperationKind.Update && error.Result != null)
+                    {
+                        await error.CancelAndUpdateItemAsync(error.Result);
+                    }
+                    else
+                    {
+                        await error.CancelAndDiscardItemAsync();
+                    }
+
+                    Console.WriteLine(@"Error executing sync operation. Item: {0} ({1}). Operation discarded.", error.TableName, error.Item["id"]);
                 }
             }
         }

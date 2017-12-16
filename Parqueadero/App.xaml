@@ -5,7 +5,6 @@
     xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
     xmlns:infra="clr-namespace:Parqueadero.Infrastructure" 
     xmlns:helpers="clr-namespace:Parqueadero.Helpers" 
-    xmlns:services="clr-namespace:Parqueadero.Services"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     x:Class="Parqueadero.App">
     
@@ -29,9 +28,8 @@
                 <Setter Property="WidthRequest" Value="80" />
             </Style>
 
-            <!-- Services -->
+            <!-- Locator -->
             <infra:InstanceLocator x:Key="Locator"></infra:InstanceLocator>
-            <services:DataService x:Key="DataService"></services:DataService>
 
             <!-- Converters -->
             <helpers:PlateConverter x:Key="PlateConverter"></helpers:PlateConverter>

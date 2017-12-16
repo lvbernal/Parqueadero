@@ -21,6 +21,8 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        public DataService Data { get; set; }
+
         private ObservableCollection<VehicleOptionViewModel> VehicleOptions { get; set; }
 
         private VehicleOptionViewModel _carOption;
@@ -226,7 +228,7 @@ namespace Parqueadero.ViewModels
 
                 if (printed)
                 {
-                    await Save(vehicle);
+                    await Data.SaveVehicle(vehicle);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
@@ -256,12 +258,6 @@ namespace Parqueadero.ViewModels
         {
             var printService = new PrintService(Parking.PrinterUrl);
             return await printService.PrintCheckIn(vehicle);
-        }
-
-        private async Task Save(VehicleRecord vehicle)
-        {
-            var dataService = (DataService)Application.Current.Resources["DataService"];
-            await dataService.SaveVehicle(vehicle);
         }
     }
 }
