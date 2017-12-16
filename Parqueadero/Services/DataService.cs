@@ -21,11 +21,10 @@ namespace Parqueadero.Services
         private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
         private ParkingLot _parking;
 
-
         public DataService(ParkingLot parking)
         {
             _parking = parking;
-            client = new MobileServiceClient(Constants.ApplicationURL);
+            client = new MobileServiceClient(Constants.ApplicationURL, new DataServiceHandler());
 
             var store = new MobileServiceSQLiteStore("parqueaderostore.db");
             store.DefineTable<VehicleRecord>();
