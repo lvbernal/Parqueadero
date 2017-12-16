@@ -8,7 +8,7 @@ namespace Parqueadero.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var logo = (string)value + "logo";
+            var logo = (string)value + "Logo";
             return Application.Current.Resources[logo];
         }
 

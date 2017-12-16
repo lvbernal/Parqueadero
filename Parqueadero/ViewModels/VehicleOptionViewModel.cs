@@ -27,28 +27,6 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private double _baseFee;
-        public double BaseFee
-        {
-            get { return _baseFee; }
-            set
-            {
-                _baseFee = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private double _fee;
-        public double Fee
-        {
-            get { return _fee; }
-            set
-            {
-                _fee = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         public Command ChangeSelectCommand { get; }
         public void ChangeSelect()
         {

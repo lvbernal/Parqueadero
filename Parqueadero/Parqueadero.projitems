@@ -54,6 +54,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VehicleLogoConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\BooleanNegationConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PrintService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ParkingLot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />
