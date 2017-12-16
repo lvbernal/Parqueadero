@@ -252,6 +252,7 @@
     <AndroidResource Include="Resources\drawable\helmet.png" />
     <AndroidResource Include="Resources\drawable\addition.png" />
     <AndroidResource Include="Resources\drawable\substraction.png" />
+    <AndroidResource Include="Resources\drawable\summary.png" />
   </ItemGroup>
   <Import Project="..\Parqueadero\Parqueadero.projitems" Label="Shared" Condition="Exists('..\Parqueadero\Parqueadero.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

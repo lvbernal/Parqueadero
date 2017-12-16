@@ -4,9 +4,9 @@ using Xamarin.Forms;
 
 namespace Parqueadero.Pages
 {
-    public partial class CheckInPage : ContentPage
+    public partial class SummaryPage : ContentPage
     {
-        public CheckInPage()
+        public SummaryPage()
         {
             InitializeComponent();
         }

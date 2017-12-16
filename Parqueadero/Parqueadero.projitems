@@ -23,6 +23,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\SummaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
@@ -56,6 +60,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\PrintService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ParkingLot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DataServiceHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\SummaryPage.xaml.cs">
+      <DependentUpon>SummaryPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />

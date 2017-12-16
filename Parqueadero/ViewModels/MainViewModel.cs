@@ -50,6 +50,7 @@ namespace Parqueadero.ViewModels
         {
             DoCheckInCommand = new Command(DoCheckIn);
             DoCheckOutCommand = new Command(DoCheckOut);
+            ShowSummaryCommand = new Command(ShowSummary);
 
             Parking = new ParkingLot();
             Data = new DataService(Parking);
@@ -73,6 +74,12 @@ namespace Parqueadero.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new CheckOutPage());
         }
 
+        public Command ShowSummaryCommand { get; }
+        public async void ShowSummary()
+        {
+            SyncVehicles();
+            await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
+        }
 
         public async Task SyncVehicles()
         {

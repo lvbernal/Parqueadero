@@ -219,6 +219,7 @@
     <BundleResource Include="Resources\helmet.png" />
     <BundleResource Include="Resources\addition.png" />
     <BundleResource Include="Resources\substraction.png" />
+    <BundleResource Include="Resources\summary.png" />
   </ItemGroup>
   <Import Project="..\Parqueadero\Parqueadero.projitems" Label="Shared" Condition="Exists('..\Parqueadero\Parqueadero.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
