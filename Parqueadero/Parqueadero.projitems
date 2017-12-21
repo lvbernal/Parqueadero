@@ -63,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\SummaryPage.xaml.cs">
       <DependentUpon>SummaryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />

@@ -44,6 +44,17 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private SummaryViewModel _summary;
+        public SummaryViewModel Summary
+        {
+            get { return _summary; }
+            set
+            {
+                _summary = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private bool loadingVehicles = false;
 
         public MainViewModel()
@@ -78,6 +89,7 @@ namespace Parqueadero.ViewModels
         public async void ShowSummary()
         {
             SyncVehicles();
+            Summary = new SummaryViewModel() { Parking = Parking, Data = Data };
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
         }
 
