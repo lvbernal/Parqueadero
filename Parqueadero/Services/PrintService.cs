@@ -32,7 +32,7 @@ namespace Parqueadero.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.Timeout = new TimeSpan(0, 0, 10);
+                    client.Timeout = new TimeSpan(0, 0, 5);
                     var resolver = new DefaultContractResolver() { NamingStrategy = new SnakeCaseNamingStrategy() };
                     var jsonSettings = new JsonSerializerSettings() { ContractResolver = resolver };
                     string content = JsonConvert.SerializeObject(vehicle, jsonSettings);
