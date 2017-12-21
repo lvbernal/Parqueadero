@@ -27,7 +27,7 @@
 
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" Grid.Row="1">
                     <Label Text="Totales por fecha" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <ListView ItemsSource="{Binding Items}" HasUnevenRows="true" ItemTapped="OnItemTapped">
+                    <ListView ItemsSource="{Binding Items}" ItemTapped="OnItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -41,7 +41,7 @@
                     </ListView>
 
                     <Label Text="Vehículos en el parqueadero" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <ListView ItemsSource="{Binding Vehicles}" HasUnevenRows="true" ItemTapped="OnItemTapped">
+                    <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
