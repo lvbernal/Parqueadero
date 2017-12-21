@@ -143,7 +143,7 @@ class Printer(object):
 
     def _format_date(self, date):
         dt = dateutil.parser.parse(date)
-        return datetime.datetime.strftime(dt, "%d-%m-%Y %H:%M:%S")
+        return datetime.datetime.strftime(dt, "%d-%m-%Y %I:%M:%S %p")
 
     def _get_vehicle_str(self, vehicle):
         vehicle_map = {

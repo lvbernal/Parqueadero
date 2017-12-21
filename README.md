@@ -6,12 +6,12 @@ Aplicación para el negocio familiar.
 
 * check in by Chinnaking from the Noun Project
 * checkout by Chinnaking from the Noun Project
+* clipboard by jeff from the Noun Project
 * Car by jeff from the Noun Project
 * Truck by jeff from the Noun Project
 * Truck by jeff from the Noun Project
 * ATV by jeff from the Noun Project
 * Bicycle by jeff from the Noun Project
-* clipboard by jeff from the Noun Project
 * Helmet by Gabriel Ciccariello from the Noun Project
 * subtraction by Marta Ambrosetti from the Noun Project
 * addition by Marta Ambrosetti from the Noun Project
