@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     x:Class="Parqueadero.Pages.SummaryPage"
-    xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
     BindingContext="{Binding Main, Source={StaticResource Locator}}">
 
     <ContentPage.Padding>
@@ -14,55 +13,35 @@
     <ContentPage.Content>
         <ScrollView>
             
-            <Grid BindingContext="{Binding Summary}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Grid BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="0">
+                <StackLayout HorizontalOptions="CenterAndExpand" Grid.Row="0">
                     <DatePicker VerticalOptions="CenterAndExpand" Date="{Binding Date, Mode=TwoWay}">
                         <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
                     </DatePicker>
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="1">
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="cash.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Fee, StringFormat='${0}'}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vcar.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Car}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vpickup.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Pickup}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vtruck.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Truck}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vmotorbike.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Motorbike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vbike.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Bike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="equal.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
-                            <Label Text="{Binding Total}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                    </StackLayout>
-                </StackLayout>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" Grid.Row="1">
+                    <Label Text="Totales por fecha" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                    <ListView ItemsSource="{Binding Items}" HasUnevenRows="true" ItemTapped="OnItemTapped">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding Image}" BackgroundColor="#3b3f42" />
+                                        <Label Text="{Binding Value}" FontSize="Small" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
 
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Grid.Row="2">
-                    <Label Text="Vehículos en el parqueadero" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <ListView ItemsSource="{Binding Vehicles}">
+                    <Label Text="Vehículos en el parqueadero" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                    <ListView ItemsSource="{Binding Vehicles}" HasUnevenRows="true" ItemTapped="OnItemTapped">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

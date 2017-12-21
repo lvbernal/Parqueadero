@@ -10,5 +10,10 @@ namespace Parqueadero.Pages
         {
             InitializeComponent();
         }
+
+        public void OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            ((ListView)sender).SelectedItem = null;
+        }
     }
 }

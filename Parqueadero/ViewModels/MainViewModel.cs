@@ -109,7 +109,7 @@ namespace Parqueadero.ViewModels
             Busy = true;
             SyncVehicles();
             Summary = new SummaryViewModel() { Parking = Parking, Data = Data };
-            Summary.LoadVehicles();
+            Summary.LoadSummary();
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
             Busy = false;
         }

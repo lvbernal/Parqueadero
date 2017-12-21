@@ -32,79 +32,13 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private double _fee;
-        public double Fee
+        private ObservableCollection<SummaryItem> _items = new ObservableCollection<SummaryItem>();
+        public ObservableCollection<SummaryItem> Items
         {
-            get { return _fee; }
+            get { return _items; }
             set
             {
-                _fee = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _car;
-        public int Car
-        {
-            get { return _car; }
-            set
-            {
-                _car = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _pickup;
-        public int Pickup
-        {
-            get { return _pickup; }
-            set
-            {
-                _pickup = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _truck;
-        public int Truck
-        {
-            get { return _truck; }
-            set
-            {
-                _truck = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _motorbike;
-        public int Motorbike
-        {
-            get { return _motorbike; }
-            set
-            {
-                _motorbike = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _bike;
-        public int Bike
-        {
-            get { return _bike; }
-            set
-            {
-                _bike = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private int _total;
-        public int Total
-        {
-            get { return _total; }
-            set
-            {
-                _total = value;
+                _items = value;
                 NotifyPropertyChanged();
             }
         }
@@ -125,7 +59,24 @@ namespace Parqueadero.ViewModels
             Date = DateTime.Now.ToLocalTime();
         }
 
-        public async void LoadVehicles()
+        public async void LoadSummary()
+        {
+            await LoadValues();
+            await LoadVehicles();
+        }
+
+        private async Task LoadValues()
+        {
+            Items.Add(new SummaryItem() { Image = "cash.png", Value = "$10.000" });
+            Items.Add(new SummaryItem() { Image = "vcar.png", Value = "10" });
+            Items.Add(new SummaryItem() { Image = "vpickup.png", Value = "5" });
+            Items.Add(new SummaryItem() { Image = "vtruck.png", Value = "1" });
+            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Value = "20" });
+            Items.Add(new SummaryItem() { Image = "vbike.png", Value = "30" });
+            Items.Add(new SummaryItem() { Image = "equal.png", Value = "66" });
+        }
+
+        private async Task LoadVehicles()
         {
             var vehicles = await Data.GetVehiclesAsync();
 
