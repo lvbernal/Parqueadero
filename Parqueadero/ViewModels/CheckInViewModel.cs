@@ -221,7 +221,8 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-            if (IsValid)
+            var canCreate = await CanCreateVehicle();
+            if (canCreate)
             {
                 var vehicle = BuildVehicle();
                 var printed = await Print(vehicle);
@@ -236,8 +237,23 @@ namespace Parqueadero.ViewModels
                     await Application.Current.MainPage.DisplayAlert("Alerta", "No fue posible imprimir el recibo. El ingreso no fue registrado.", "OK");
                 }
             }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Alerta", "El vehículo ya está registrado o faltan datos para registrarlo.", "OK");
+            }
 
             SavingAndPrinting = false;
+        }
+
+        private async Task<bool> CanCreateVehicle()
+        {
+            if (IsValid)
+            {
+                var existing = await Data.GetVehicle(Plate);
+                return existing == null;
+            }
+
+            return false;
         }
 
         private VehicleRecord BuildVehicle()
