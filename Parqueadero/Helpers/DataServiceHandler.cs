@@ -7,7 +7,7 @@ namespace Parqueadero.Helpers
     {
         protected override async System.Threading.Tasks.Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
         {
-
+            Console.WriteLine("------");
             Console.WriteLine("MOBILE SERVICE REQUEST:");
             Console.WriteLine("Uri: " + request.RequestUri);
             Console.WriteLine("Method: " + request.Method);
@@ -15,7 +15,7 @@ namespace Parqueadero.Helpers
             if (request.Content != null)
             {
                 var content = await request.Content.ReadAsStringAsync();
-                Console.WriteLine("Content: " + content ?? "");
+                Console.WriteLine("Content: " + content ?? "None");
             }
 
             Console.WriteLine("======");

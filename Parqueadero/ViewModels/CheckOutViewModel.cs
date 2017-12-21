@@ -32,19 +32,19 @@ namespace Parqueadero.ViewModels
 
                 if (_currentVehicle != null)
                 {
-                    CurrentVehicle = Parking.AddCheckOutInfoForVehicle(CurrentVehicle);
+                    _currentVehicle = Parking.AddCheckOutInfoForVehicle(_currentVehicle);
 
-                    VehicleType = CurrentVehicle.VehicleType;
-                    Plate = CurrentVehicle.Plate;
-                    CheckInTime = CurrentVehicle.CheckIn;
-                    CheckOutTime = CurrentVehicle.CheckOut;
-                    Helmets = CurrentVehicle.Helmets;
-                    TotalFee = CurrentVehicle.Fee;
+                    VehicleType = _currentVehicle.VehicleType;
+                    Plate = _currentVehicle.Plate;
+                    CheckInTime = _currentVehicle.CheckIn;
+                    CheckOutTime = _currentVehicle.CheckOut;
+                    Helmets = _currentVehicle.Helmets;
+                    TotalFee = _currentVehicle.Fee;
 
-                    BaseFee = CurrentVehicle.BaseFee;
-                    HelmetsFee = CurrentVehicle.HelmetsFee;
-                    AdditionalHours = CurrentVehicle.AdditionalHours;
-                    AdditionalFee = CurrentVehicle.AdditionalFee;
+                    BaseFee = _currentVehicle.BaseFee;
+                    HelmetsFee = _currentVehicle.HelmetsFee;
+                    AdditionalHours = _currentVehicle.AdditionalHours;
+                    AdditionalFee = _currentVehicle.AdditionalFee;
 
                     DoScan = false;
                 }

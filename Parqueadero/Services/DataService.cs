@@ -72,8 +72,6 @@ namespace Parqueadero.Services
             {
                 await vehicleTable.UpdateAsync(vehicle);
             }
-
-            await SyncAsync();
         }
 
         public async Task SyncAsync()

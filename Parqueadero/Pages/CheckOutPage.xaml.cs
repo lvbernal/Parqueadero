@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using ZXing.Net.Mobile.Forms;
 using Parqueadero.ViewModels;
+using System.Threading.Tasks;
 
 namespace Parqueadero.Pages
 {
@@ -29,21 +30,7 @@ namespace Parqueadero.Pages
             };
 
             scanner.OnScanResult += (result) => Device.BeginInvokeOnMainThread(
-                async () =>
-                {
-                    scanner.IsAnalyzing = false;
-
-                    var valid = await context.LoadVehicle(result.Text);
-
-                    if (valid)
-                    {
-                        scanner.IsScanning = false;
-                    }
-                    else
-                    {
-                        scanner.IsAnalyzing = true;
-                    }
-                }
+                async () => { await ValidateResult(result.Text); }
             );
 
             overlay = new ZXingDefaultOverlay()
@@ -63,22 +50,27 @@ namespace Parqueadero.Pages
         private void InitializeNoReceiptOption()
         {
             NoReceiptButton.Clicked += (s, e) => Device.BeginInvokeOnMainThread(
-                async () =>
-                {
-                    scanner.IsAnalyzing = false;
-
-                    var valid = await context.LoadVehicle(NoReceiptPlate.Text);
-
-                    if (valid)
-                    {
-                        scanner.IsScanning = false;
-                    }
-                    else
-                    {
-                        scanner.IsAnalyzing = true;
-                    }
-                }
+                async () => { await ValidateResult(NoReceiptPlate.Text); }
             );
+        }
+
+        private async Task ValidateResult(string plate)
+        {
+            if (scanner.IsAnalyzing)
+            {
+                scanner.IsAnalyzing = false;
+
+                var valid = await context.LoadVehicle(plate);
+
+                if (valid)
+                {
+                    scanner.IsScanning = false;
+                }
+                else
+                {
+                    scanner.IsAnalyzing = true;
+                }
+            }
         }
 
         protected override void OnAppearing()
