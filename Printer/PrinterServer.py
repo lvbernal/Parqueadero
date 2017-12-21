@@ -131,7 +131,7 @@ class Printer(object):
             p.text("Hora adicional: \t\t$" + str(additional_fee) + "\n")
 
             if helmets > 0:
-                p.text("Accesorios: \t\t$" + str(helmets_fee) + "\n")
+                p.text("Accesorios (c/u): \t\t$" + str(helmets_fee) + "\n")
 
             p.text("\n")
             p.qr(plate, size=8)
