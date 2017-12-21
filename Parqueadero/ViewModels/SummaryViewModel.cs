@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Parqueadero.Models;
 using Parqueadero.Services;
 
@@ -107,9 +109,33 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private ObservableCollection<VehicleRecord> _vehicles = new ObservableCollection<VehicleRecord>();
+        public ObservableCollection<VehicleRecord> Vehicles
+        {
+            get { return _vehicles; }
+            set
+            {
+                _vehicles = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public SummaryViewModel()
         {
             Date = DateTime.Now.ToLocalTime();
+        }
+
+        public async void LoadVehicles()
+        {
+            var vehicles = await Data.GetVehiclesAsync();
+
+            if (vehicles != null)
+            {
+                foreach (var vehicle in vehicles)
+                {
+                    Vehicles.Add(vehicle);
+                }
+            }
         }
     }
 }

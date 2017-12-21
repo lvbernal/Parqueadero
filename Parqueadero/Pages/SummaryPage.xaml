@@ -61,6 +61,20 @@
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Grid.Row="2">
+                    <Label Text="Vehículos en el parqueadero" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                    <ListView ItemsSource="{Binding Vehicles}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
+                                        <Label Text="{Binding Plate}" FontSize="Small" VerticalOptions="Center" />
+                                        <Label Text="{Binding CheckIn}" FontSize="Small" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackLayout>
                 
             </Grid>

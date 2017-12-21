@@ -43,7 +43,7 @@ namespace Parqueadero.Models
         public double AdditionalFee { get; set; }
 
         [JsonProperty(PropertyName = "helmets_fee")]
-		public double HelmetsFee { get; set; }
+        public double HelmetsFee { get; set; }
 
         [JsonProperty(PropertyName = "additional_hours")]
         public int AdditionalHours { get; set; }

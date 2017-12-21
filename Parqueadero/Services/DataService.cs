@@ -33,13 +33,12 @@ namespace Parqueadero.Services
             vehicleTable = client.GetSyncTable<VehicleRecord>();
         }
 
-        public async Task<ObservableCollection<VehicleRecord>> GetVehiclesAsync()
+        public async Task<IEnumerable<VehicleRecord>> GetVehiclesAsync()
         {
             try
             {
-                IEnumerable<VehicleRecord> vehicles = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done).ToEnumerableAsync();
-                var vCollection = new ObservableCollection<VehicleRecord>(vehicles);
-                return vCollection;
+                var vehicles = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done).OrderBy(v => v.VehicleType).ToEnumerableAsync();
+                return vehicles;
             }
             catch (Exception e)
             {
