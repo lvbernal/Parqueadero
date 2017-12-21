@@ -67,13 +67,13 @@ namespace Parqueadero.ViewModels
 
         private async Task LoadValues()
         {
-            Items.Add(new SummaryItem() { Image = "cash.png", Value = "$10.000" });
-            Items.Add(new SummaryItem() { Image = "vcar.png", Value = "10" });
-            Items.Add(new SummaryItem() { Image = "vpickup.png", Value = "5" });
-            Items.Add(new SummaryItem() { Image = "vtruck.png", Value = "1" });
-            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Value = "20" });
-            Items.Add(new SummaryItem() { Image = "vbike.png", Value = "30" });
-            Items.Add(new SummaryItem() { Image = "equal.png", Value = "66" });
+            Items.Add(new SummaryItem() { Image = "cash.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vcar.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vpickup.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vtruck.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vbike.png", Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "equal.png", Value = "Pendiente" });
         }
 
         private async Task LoadVehicles()

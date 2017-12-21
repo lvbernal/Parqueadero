@@ -13,50 +13,41 @@
     <ContentPage.Content>
         <ScrollView>
             
-            <Grid BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackLayout HorizontalOptions="CenterAndExpand" Grid.Row="0">
-                    <DatePicker VerticalOptions="CenterAndExpand" Date="{Binding Date, Mode=TwoWay}">
+            <StackLayout BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Totales por fecha:" FontSize="Large" />
+                    <DatePicker Date="{Binding Date, Mode=TwoWay}">
                         <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
                     </DatePicker>
                 </StackLayout>
+                <ListView ItemsSource="{Binding Items}" ItemTapped="OnItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Image}" BackgroundColor="#3b3f42" />
+                                    <Label Text="{Binding Value}" FontSize="Medium" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" Grid.Row="1">
-                    <Label Text="Totales por fecha" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <ListView ItemsSource="{Binding Items}" ItemTapped="OnItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Image Source="{Binding Image}" BackgroundColor="#3b3f42" />
-                                        <Label Text="{Binding Value}" FontSize="Small" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-
-                    <Label Text="Vehículos en el parqueadero" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                    <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
-                                        <Label Text="{Binding Plate}" FontSize="Small" VerticalOptions="Center" />
-                                        <Label Text="{Binding CheckIn}" FontSize="Small" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-                
-            </Grid>
+                <Label Text="Vehículos en el parqueadero" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+                <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
+                                    <Label Text="{Binding Plate}" FontSize="Medium" VerticalOptions="Center" />
+                                    <Label Text="{Binding CheckIn}" FontSize="Medium" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
             
         </ScrollView>
 	</ContentPage.Content>

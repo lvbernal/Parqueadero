@@ -29,7 +29,7 @@
         
         <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
             
-            <controls:CircleImage Source="summary.png" FillColor="#fbba42" HeightRequest="72" WidthRequest="72">
+            <controls:CircleImage Source="summary.png" FillColor="#fbba42" HeightRequest="96" WidthRequest="96">
                 <controls:CircleImage.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ShowSummaryCommand}" />
                 </controls:CircleImage.GestureRecognizers>
