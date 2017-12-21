@@ -21,17 +21,20 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackLayout HorizontalOptions="CenterAndExpand" Grid.Row="0">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="0">
                     <DatePicker VerticalOptions="CenterAndExpand" Date="{Binding Date, Mode=TwoWay}">
                         <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
                     </DatePicker>
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="FillAndExpand" Grid.Row="1">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="1">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Fee, StringFormat='${0}'}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Grid.Row="2">
                     <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Fee, StringFormat='${0}'}" HorizontalOptions="Center" />
-                        </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <controls:CircleImage Source="vcar.png" FillColor="#fbba42" HorizontalOptions="Center" />
                             <Label Text="{Binding Car}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
@@ -57,9 +60,6 @@
                             <Label Text="{Binding Total}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
                         </StackLayout>
                     </StackLayout>
-                </StackLayout>
-
-                <StackLayout HorizontalOptions="CenterAndExpand" Grid.Row="2">
                 </StackLayout>
                 
             </Grid>
