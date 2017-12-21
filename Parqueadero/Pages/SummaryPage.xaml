@@ -17,8 +17,8 @@
             <Grid BindingContext="{Binding Summary}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="0">
@@ -28,38 +28,39 @@
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Grid.Row="1">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Fee, StringFormat='${0}'}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="cash.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Fee, StringFormat='${0}'}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="vcar.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Car}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="vpickup.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Pickup}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="vtruck.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Truck}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="vmotorbike.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Motorbike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="vbike.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Bike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <controls:CircleImage Source="equal.png" FillColor="#fbba42" HorizontalOptions="Center" HeightRequest="72" WidthRequest="72" />
+                            <Label Text="{Binding Total}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                        </StackLayout>
                     </StackLayout>
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Grid.Row="2">
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vcar.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Car}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vpickup.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Pickup}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vtruck.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Truck}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vmotorbike.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Motorbike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="vbike.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Bike}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <controls:CircleImage Source="summary.png" FillColor="#fbba42" HorizontalOptions="Center" />
-                            <Label Text="{Binding Total}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                        </StackLayout>
-                    </StackLayout>
                 </StackLayout>
                 
             </Grid>

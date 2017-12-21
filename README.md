@@ -12,9 +12,11 @@ Aplicación para el negocio familiar.
 * Truck by jeff from the Noun Project
 * ATV by jeff from the Noun Project
 * Bicycle by jeff from the Noun Project
+* Piggy Bank by jeff from the Noun Project
 * Helmet by Gabriel Ciccariello from the Noun Project
 * subtraction by Marta Ambrosetti from the Noun Project
 * addition by Marta Ambrosetti from the Noun Project
+* Equal by Marta Ambrosetti from the Noun Project
 
 ### Paleta de colores
 * Copy of Picture book by Robert Lasch from Adobe Color CC

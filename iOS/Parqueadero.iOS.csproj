@@ -220,6 +220,8 @@
     <BundleResource Include="Resources\addition.png" />
     <BundleResource Include="Resources\substraction.png" />
     <BundleResource Include="Resources\summary.png" />
+    <BundleResource Include="Resources\cash.png" />
+    <BundleResource Include="Resources\equal.png" />
   </ItemGroup>
   <Import Project="..\Parqueadero\Parqueadero.projitems" Label="Shared" Condition="Exists('..\Parqueadero\Parqueadero.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
