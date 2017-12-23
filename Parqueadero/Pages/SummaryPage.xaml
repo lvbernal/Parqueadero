@@ -11,8 +11,6 @@
     </ContentPage.Padding>
 
     <ContentPage.Content>
-        <ScrollView>
-            
             <StackLayout BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                     <Label Text="Totales por fecha:" FontSize="Large" />
@@ -34,21 +32,20 @@
                 </ListView>
 
                 <Label Text="Vehículos en el parqueadero" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-                <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal">
-                                    <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
-                                    <Label Text="{Binding Plate}" FontSize="Medium" VerticalOptions="Center" />
-                                    <Label Text="{Binding CheckIn}" FontSize="Medium" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
+                                        <Label Text="{Binding Plate}" FontSize="Medium" VerticalOptions="Center" />
+                                        <Label Text="{Binding CheckIn}" FontSize="Medium" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
             </StackLayout>
             
-        </ScrollView>
 	</ContentPage.Content>
 </ContentPage>
