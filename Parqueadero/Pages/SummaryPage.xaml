@@ -13,7 +13,7 @@
     <ContentPage.Content>
             <StackLayout BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Totales por fecha:" FontSize="Large" />
+                    <Label Text="Totales por fecha" FontSize="Large" />
                     <DatePicker Date="{Binding Date, Mode=TwoWay}">
                         <DatePicker.Format>yyyy-MM-dd</DatePicker.Format>
                     </DatePicker>
@@ -24,7 +24,8 @@
                             <ViewCell>
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding Image}" BackgroundColor="#3b3f42" />
-                                    <Label Text="{Binding Value}" FontSize="Medium" HorizontalOptions="EndAndExpand" VerticalOptions="Center" />
+                                    <Label Text="{Binding Text}" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                                    <Label Text="{Binding Value}" FontSize="Medium" HorizontalOptions="End" VerticalOptions="Center" />
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>

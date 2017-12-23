@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Parqueadero.Models;
@@ -54,26 +55,52 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private Dictionary<string, int> _countDict;
+        public Dictionary<string, int> CountDict
+        {
+            get { return _countDict; }
+            set
+            {
+                _countDict = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public SummaryViewModel()
         {
             Date = DateTime.Now.ToLocalTime();
+            CountDict = new Dictionary<string, int>
+            {
+                { "car", 0 },
+                { "pickup", 0 },
+                { "truck", 0 },
+                { "motorbike", 0 },
+                { "bike", 0 }
+            };
         }
 
         public async void LoadSummary()
         {
-            await LoadValues();
             await LoadVehicles();
+            await LoadValues();
         }
 
         private async Task LoadValues()
         {
-            Items.Add(new SummaryItem() { Image = "cash.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vcar.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vpickup.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vtruck.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vbike.png", Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "equal.png", Value = "Pendiente" });
+            var dateStr = Date.Date.ToString("yyyy-MM-dd");
+
+            Items.Add(new SummaryItem() { Image = "cash.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vcar.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vpickup.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vtruck.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vbike.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "equal.png", Text = dateStr, Value = "Pendiente" });
+            Items.Add(new SummaryItem() { Image = "vcar.png", Text = "Actual", Value = CountDict["car"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vpickup.png", Text = "Actual", Value = CountDict["pickup"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vtruck.png", Text = "Actual", Value = CountDict["truck"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = "Actual", Value = CountDict["motorbike"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vbike.png", Text = "Actual", Value = CountDict["bike"].ToString() });
         }
 
         private async Task LoadVehicles()
@@ -84,6 +111,7 @@ namespace Parqueadero.ViewModels
             {
                 foreach (var vehicle in vehicles)
                 {
+                    CountDict[vehicle.VehicleType]++;
                     Vehicles.Add(vehicle);
                 }
             }
