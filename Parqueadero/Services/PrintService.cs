@@ -18,11 +18,13 @@ namespace Parqueadero.Services
 
         public async Task<bool> PrintCheckIn(VehicleRecord vehicle)
         {
+            if (_printerUrl == "dev") { return true; }
             return await Print(vehicle);
         }
 
         public async Task<bool> PrintCheckOut(VehicleRecord vehicle)
         {
+            if (_printerUrl == "dev") { return true; }
             return await Print(vehicle);
         }
 
