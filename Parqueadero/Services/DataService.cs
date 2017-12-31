@@ -81,11 +81,11 @@ namespace Parqueadero.Services
 
             try
             {
-                var query = vehicleTable.CreateQuery().Where(v => v.ParkingLotId == _parking.Id && !v.Done);
+                var syncQuery = vehicleTable.CreateQuery().Where(v => v.ParkingLotId == _parking.Id);
                 var purgeQuery = vehicleTable.CreateQuery().Where(v => v.Done);
 
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", query);
+                await vehicleTable.PullAsync("allVehicleRecords", syncQuery);
                 await vehicleTable.PurgeAsync(purgeQuery);
             }
             catch (MobileServicePushFailedException exc)

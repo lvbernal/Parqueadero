@@ -30,6 +30,7 @@ namespace Parqueadero.ViewModels
             {
                 _date = value;
                 NotifyPropertyChanged();
+                LoadValues();
             }
         }
 
@@ -68,7 +69,6 @@ namespace Parqueadero.ViewModels
 
         public SummaryViewModel()
         {
-            Date = DateTime.Now.ToLocalTime();
             CountDict = new Dictionary<string, int>
             {
                 { "car", 0 },
@@ -81,12 +81,14 @@ namespace Parqueadero.ViewModels
 
         public async void LoadSummary()
         {
-            await LoadVehicles();
-            await LoadValues();
+			await LoadVehicles();
+            Date = DateTime.Now.ToLocalTime();
         }
 
         private async Task LoadValues()
         {
+            Items.Clear();
+
             var dateStr = Date.Date.ToString("yyyy-MM-dd");
 
             Items.Add(new SummaryItem() { Image = "cash.png", Text = dateStr, Value = "Pendiente" });
