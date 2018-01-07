@@ -97,12 +97,6 @@
     <Reference Include="ZXing.Net.Mobile.Forms.iOS">
       <HintPath>..\packages\ZXing.Net.Mobile.Forms.2.3.2\lib\Xamarin.iOS10\ZXing.Net.Mobile.Forms.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Permissions.Abstractions">
-      <HintPath>..\packages\Plugin.Permissions.2.1.0\lib\Xamarin.iOS10\Plugin.Permissions.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Permissions">
-      <HintPath>..\packages\Plugin.Permissions.2.1.0\lib\Xamarin.iOS10\Plugin.Permissions.dll</HintPath>
-    </Reference>
     <Reference Include="ImageCircle.Forms.Plugin.Abstractions">
       <HintPath>..\packages\Xam.Plugins.Forms.ImageCircle.1.8.1\lib\Xamarin.iOS10\ImageCircle.Forms.Plugin.Abstractions.dll</HintPath>
     </Reference>
@@ -187,6 +181,12 @@
     </Reference>
     <Reference Include="Microsoft.Data.OData">
       <HintPath>..\packages\Microsoft.Data.OData.5.8.3\lib\netstandard1.1\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions.Abstractions">
+      <HintPath>..\packages\Plugin.Permissions.2.2.1\lib\Xamarin.iOS10\Plugin.Permissions.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions">
+      <HintPath>..\packages\Plugin.Permissions.2.2.1\lib\Xamarin.iOS10\Plugin.Permissions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
