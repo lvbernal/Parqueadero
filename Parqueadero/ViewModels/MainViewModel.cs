@@ -3,7 +3,6 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using Parqueadero.Pages;
 using Parqueadero.Services;
-using Parqueadero.Models;
 
 namespace Parqueadero.ViewModels
 {
@@ -93,6 +92,7 @@ namespace Parqueadero.ViewModels
             Busy = true;
             SyncVehicles();
             Summary = new SummaryViewModel();
+            Summary.LoadSummary();
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
             Busy = false;
         }
