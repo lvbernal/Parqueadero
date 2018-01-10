@@ -10,22 +10,18 @@ namespace Parqueadero.Services
 {
     public class PrintService
     {
-        public async Task<bool> PrintCheckIn(VehicleRecord vehicle)
-        {
-            if (Constants.PrinterUr == "dev") { return true; }
-            return await Print(vehicle);
-        }
-
-        public async Task<bool> PrintCheckOut(VehicleRecord vehicle)
-        {
-            if (Constants.PrinterUr == "dev") { return true; }
-            return await Print(vehicle);
-        }
-
         private async Task<bool> Print(VehicleRecord vehicle)
         {
             try
             {
+                // TODO: Load printer url from settings.
+                var printerUrl = "PRINTER_URL";
+
+                if (printerUr == "dev")
+                {
+                    return true;
+                }
+
                 using (HttpClient client = new HttpClient())
                 {
                     var resolver = new DefaultContractResolver() { NamingStrategy = new SnakeCaseNamingStrategy() };
@@ -35,7 +31,7 @@ namespace Parqueadero.Services
                     StringContent body = new StringContent(content, Encoding.UTF8, "application/json");
 
                     client.Timeout = new TimeSpan(0, 0, 10);
-                    var result = await client.PostAsync(Constants.PrinterUr, body);
+                    var result = await client.PostAsync(printerUr, body);
                     var data = await result.Content.ReadAsStringAsync();
 
                     return result.IsSuccessStatusCode;
