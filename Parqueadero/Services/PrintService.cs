@@ -17,7 +17,7 @@ namespace Parqueadero.Services
                 // TODO: Load printer url from settings.
                 var printerUrl = "PRINTER_URL";
 
-                if (printerUr == "dev")
+                if (printerUrl == "dev")
                 {
                     return true;
                 }
@@ -31,7 +31,7 @@ namespace Parqueadero.Services
                     StringContent body = new StringContent(content, Encoding.UTF8, "application/json");
 
                     client.Timeout = new TimeSpan(0, 0, 10);
-                    var result = await client.PostAsync(printerUr, body);
+                    var result = await client.PostAsync(printerUrl, body);
                     var data = await result.Content.ReadAsStringAsync();
 
                     return result.IsSuccessStatusCode;
