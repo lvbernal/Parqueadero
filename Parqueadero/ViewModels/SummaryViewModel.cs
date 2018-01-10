@@ -4,24 +4,12 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Parqueadero.Models;
 using Parqueadero.Services;
+using Xamarin.Forms;
 
 namespace Parqueadero.ViewModels
 {
     public class SummaryViewModel : BindableBase
     {
-        private ParkingLot _parking;
-        public ParkingLot Parking
-        {
-            get { return _parking; }
-            set
-            {
-                _parking = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DataService Data { get; set; }
-
         public DateTime _date;
         public DateTime Date
         {
@@ -77,11 +65,7 @@ namespace Parqueadero.ViewModels
                 { "motorbike", 0 },
                 { "bike", 0 }
             };
-        }
 
-        public async void LoadSummary()
-        {
-			await LoadVehicles();
             Date = DateTime.Now.ToLocalTime();
         }
 
@@ -107,7 +91,7 @@ namespace Parqueadero.ViewModels
 
         private async Task LoadVehicles()
         {
-            var vehicles = await Data.GetVehiclesAsync();
+            var vehicles = await ((DataService)Application.Current.Resources["DataService"]).GetVehiclesAsync();
 
             if (vehicles != null)
             {
