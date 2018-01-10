@@ -5,6 +5,20 @@ namespace Parqueadero.Models
 {
     public class ParkingLot
     {
+        private static ParkingLot _instance;
+        public static ParkingLot Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ParkingLot();
+                }
+
+                return _instance;
+            }
+        }
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string PrinterUrl { get; set; }
@@ -23,7 +37,7 @@ namespace Parqueadero.Models
         public double BikeFee { get; set; }
         public double HelmetsBase { get; set; }
 
-        public ParkingLot()
+        private ParkingLot()
         {
             Id = "PARKINGLOT_ID";
             Name = "PARKINGLOT_NAME";
@@ -58,9 +72,9 @@ namespace Parqueadero.Models
                     return MotorbikeBase;
                 case Constants.Bike:
                     return BikeBase;
+                default:
+                    return 0;
             }
-
-            return 0;
         }
 
         public double GetFee(string vehicleType)
@@ -77,9 +91,9 @@ namespace Parqueadero.Models
                     return MotorbikeFee;
                 case Constants.Bike:
                     return BikeFee;
+                default:
+                    return 0;
             }
-
-            return 0;
         }
 
         public double GetHelmetsFee()

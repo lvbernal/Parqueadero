@@ -12,7 +12,7 @@ namespace Parqueadero.Services
 {
     public class DataService
     {
-        // TODO: load from settings
+        // TODO: load from settings. Id appears also in ParkingLotModel
         private string parkingLotId = "PARKING_LOT";
         private string applicationUrl = "APPLICATION_URL";
 

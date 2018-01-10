@@ -10,21 +10,6 @@ namespace Parqueadero.ViewModels
 {
     public class CheckInViewModel : BindableBase
     {
-        private ParkingLot _parking;
-        public ParkingLot Parking
-        {
-            get { return _parking; }
-            set
-            {
-                _parking = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DataService Data { get; set; }
-
-        private ObservableCollection<VehicleOptionViewModel> VehicleOptions { get; set; }
-
         private VehicleOptionViewModel _carOption;
         public VehicleOptionViewModel CarOption
         {
@@ -121,21 +106,17 @@ namespace Parqueadero.ViewModels
         {
             get
             {
-                if (SelectedVehicle == null) { return ""; }
-
-                var helmetsRate = Parking.GetHelmetsFee() * Helmets;
-                var baseFee = Parking.GetBaseFee(SelectedVehicle.VehicleType);
-                var fee = Parking.GetFee(SelectedVehicle.VehicleType);
+                var helmetsRate = ParkingLot.Instance.GetHelmetsFee() * Helmets;
+                var baseFee = ParkingLot.Instance.GetBaseFee(SelectedVehicle?.VehicleType);
+                var fee = ParkingLot.Instance.GetFee(SelectedVehicle?.VehicleType);
 
                 if (helmetsRate > 0)
                 {
-                    var format = "${0} + {1}/h+, + ${2}";
-                    return String.Format(format, baseFee, fee, helmetsRate);
+                    return String.Format("${0} + {1}/h+, + ${2}", baseFee, fee, helmetsRate);
                 }
                 else
                 {
-                    var format = "${0} + {1}/h+";
-                    return String.Format(format, baseFee, fee);
+                    return String.Format("${0} + {1}/h+", baseFee, fee);
                 }
             }
         }
@@ -165,6 +146,7 @@ namespace Parqueadero.ViewModels
             AddHelmetCommand = new Command(AddHelmet);
             RemoveHelmetCommand = new Command(RemoveHelmet);
             CheckInCommand = new Command(CheckIn, () => !SavingAndPrinting);
+
             InitializeVehicleOptions();
         }
 
@@ -176,31 +158,33 @@ namespace Parqueadero.ViewModels
             MotorbikeOption = new VehicleOptionViewModel() { VehicleType = Constants.Motorbike };
             BikeOption = new VehicleOptionViewModel() { VehicleType = Constants.Bike };
 
-            CarOption.PropertyChanged += (s, e) => ValidateSelection(CarOption);
-            PickupOption.PropertyChanged += (s, e) => ValidateSelection(PickupOption);
-            TruckOption.PropertyChanged += (s, e) => ValidateSelection(TruckOption);
-            MotorbikeOption.PropertyChanged += (s, e) => ValidateSelection(MotorbikeOption);
-            BikeOption.PropertyChanged += (s, e) => ValidateSelection(BikeOption);
-
-            VehicleOptions = new ObservableCollection<VehicleOptionViewModel>()
+            var vehicleOptions = new ObservableCollection<VehicleOptionViewModel>()
             {
                 CarOption, PickupOption, TruckOption, MotorbikeOption, BikeOption
             };
+
+            ConfigureUniqueSelection(vehicleOptions);
         }
 
-        private void ValidateSelection(VehicleOptionViewModel vehicle)
+        private void ConfigureUniqueSelection(ObservableCollection<VehicleOptionViewModel> vehicleOptions)
         {
-            if (vehicle.Selected)
+            foreach (var vehicle in vehicleOptions)
             {
-                SelectedVehicle = vehicle;
-
-                foreach (var otherVehicle in VehicleOptions)
+                vehicle.PropertyChanged += delegate
                 {
-                    if (otherVehicle != SelectedVehicle)
+                    if (vehicle.Selected)
                     {
-                        otherVehicle.Selected = false;
+                        SelectedVehicle = vehicle;
+
+                        foreach (var otherVehicle in vehicleOptions)
+                        {
+                            if (otherVehicle != SelectedVehicle)
+                            {
+                                otherVehicle.Selected = false;
+                            }
+                        }
                     }
-                }
+                };
             }
         }
 
@@ -221,15 +205,14 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-            var canCreate = await CanCreateVehicle();
-            if (canCreate)
+            if (await CanCreateVehicle())
             {
                 var vehicle = BuildVehicle();
                 var printed = await Print(vehicle);
 
                 if (printed)
                 {
-                    await Data.SaveVehicle(vehicle);
+                    await ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(vehicle);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
@@ -239,7 +222,7 @@ namespace Parqueadero.ViewModels
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Alerta", "El vehículo ya está registrado o faltan datos para registrarlo.", "OK");
+                await Application.Current.MainPage.DisplayAlert("Alerta", "El vehículo ya está registrado.", "OK");
             }
 
             SavingAndPrinting = false;
@@ -247,13 +230,8 @@ namespace Parqueadero.ViewModels
 
         private async Task<bool> CanCreateVehicle()
         {
-            if (IsValid)
-            {
-                var existing = await Data.GetVehicle(Plate);
-                return existing == null;
-            }
-
-            return false;
+            var existing = await ((DataService)Application.Current.Resources["DataService"]).GetVehicle(Plate);
+            return existing == null;
         }
 
         private VehicleRecord BuildVehicle()
@@ -265,13 +243,12 @@ namespace Parqueadero.ViewModels
                 Helmets = Helmets
             };
 
-            return Parking.AddCheckInInfoForVehicle(vehicle);
+            return ParkingLot.Instance.AddCheckInInfoForVehicle(vehicle);
         }
 
         private async Task<bool> Print(VehicleRecord vehicle)
         {
-            var printService = new PrintService(Parking.PrinterUrl);
-            return await printService.PrintCheckIn(vehicle);
+            return await ((PrintService)Application.Current.Resources["PrintService"]).Print(vehicle);
         }
     }
 }
