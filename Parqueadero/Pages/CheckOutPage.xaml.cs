@@ -59,6 +59,7 @@ namespace Parqueadero.Pages
             if (scanner.IsAnalyzing)
             {
                 scanner.IsAnalyzing = false;
+                NoReceiptButton.IsEnabled = false;
 
                 var valid = await context.LoadVehicle(plate);
 
@@ -69,6 +70,7 @@ namespace Parqueadero.Pages
                 else
                 {
                     scanner.IsAnalyzing = true;
+                    NoReceiptButton.IsEnabled = true;
                 }
             }
         }

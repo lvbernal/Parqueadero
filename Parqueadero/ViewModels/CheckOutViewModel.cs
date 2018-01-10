@@ -8,19 +8,6 @@ namespace Parqueadero.ViewModels
 {
     public class CheckOutViewModel : BindableBase
     {
-        private ParkingLot _parking;
-        public ParkingLot Parking
-        {
-            get { return _parking; }
-            set
-            {
-                _parking = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DataService Data { get; set; }
-
         private VehicleRecord _currentVehicle;
         public VehicleRecord CurrentVehicle
         {
@@ -30,24 +17,20 @@ namespace Parqueadero.ViewModels
                 _currentVehicle = value;
                 NotifyPropertyChanged();
 
-                if (_currentVehicle != null)
-                {
-                    _currentVehicle = Parking.AddCheckOutInfoForVehicle(_currentVehicle);
+                _currentVehicle = ParkingLot.Instance.AddCheckOutInfoForVehicle(_currentVehicle);
 
-                    VehicleType = _currentVehicle.VehicleType;
-                    Plate = _currentVehicle.Plate;
-                    CheckInTime = _currentVehicle.CheckIn;
-                    CheckOutTime = _currentVehicle.CheckOut;
-                    Helmets = _currentVehicle.Helmets;
-                    TotalFee = _currentVehicle.Fee;
+                VehicleType = _currentVehicle.VehicleType;
+                Plate = _currentVehicle.Plate;
+                CheckInTime = _currentVehicle.CheckIn;
+                CheckOutTime = _currentVehicle.CheckOut;
+                Helmets = _currentVehicle.Helmets;
+                TotalFee = _currentVehicle.Fee;
+                BaseFee = _currentVehicle.BaseFee;
+                HelmetsFee = _currentVehicle.HelmetsFee;
+                AdditionalHours = _currentVehicle.AdditionalHours;
+                AdditionalFee = _currentVehicle.AdditionalFee;
 
-                    BaseFee = _currentVehicle.BaseFee;
-                    HelmetsFee = _currentVehicle.HelmetsFee;
-                    AdditionalHours = _currentVehicle.AdditionalHours;
-                    AdditionalFee = _currentVehicle.AdditionalFee;
-
-                    DoScan = false;
-                }
+                DoScan = false;
             }
         }
 
@@ -161,7 +144,7 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private string _noReceiptPlate = "";
+        private string _noReceiptPlate;
         public string NoReceiptPlate
         {
             get { return _noReceiptPlate; }
@@ -207,7 +190,7 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-            await Data.SaveVehicle(CurrentVehicle);
+            await ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(CurrentVehicle);
             var printed = await Print();
 
             if (!printed)
@@ -222,13 +205,12 @@ namespace Parqueadero.ViewModels
 
         private async Task<bool> Print()
         {
-            var printService = new PrintService(Parking.PrinterUrl);
-            return await printService.PrintCheckOut(CurrentVehicle);
+            return await ((PrintService)Application.Current.Resources["PrintService"]).Print(CurrentVehicle);
         }
 
         public async Task<bool> LoadVehicle(string code)
         {
-            var vehicle = await Data.GetVehicle(code);
+            var vehicle = await ((DataService)Application.Current.Resources["DataService"]).GetVehicle(code);
 
             if (vehicle != null)
             {
