@@ -9,19 +9,6 @@ namespace Parqueadero.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        private ParkingLot _parking;
-        public ParkingLot Parking
-        {
-            get { return _parking; }
-            set
-            {
-                _parking = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DataService Data { get; set; }
-
         private CheckInViewModel _checkIn;
         public CheckInViewModel CheckIn
         {
@@ -77,9 +64,6 @@ namespace Parqueadero.ViewModels
             DoCheckOutCommand = new Command(DoCheckOut, () => !Busy);
             ShowSummaryCommand = new Command(ShowSummary, () => !Busy);
 
-            Parking = new ParkingLot();
-            Data = new DataService(Parking);
-
             SyncVehicles();
         }
 
@@ -88,7 +72,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
-            CheckIn = new CheckInViewModel() { Parking = Parking, Data = Data };
+            CheckIn = new CheckInViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new CheckInPage());
             Busy = false;
         }
@@ -98,7 +82,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
-            CheckOut = new CheckOutViewModel() { Parking = Parking, Data = Data };
+            CheckOut = new CheckOutViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new CheckOutPage());
             Busy = false;
         }
@@ -108,8 +92,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
-            Summary = new SummaryViewModel() { Parking = Parking, Data = Data };
-            Summary.LoadSummary();
+            Summary = new SummaryViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
             Busy = false;
         }
@@ -119,7 +102,7 @@ namespace Parqueadero.ViewModels
             if (!loadingVehicles)
             {
                 loadingVehicles = true;
-                await Data.SyncAsync();
+                await ((DataService)Application.Current.Resources["DataService"]).SyncAsync();
                 loadingVehicles = false;
             }
         }

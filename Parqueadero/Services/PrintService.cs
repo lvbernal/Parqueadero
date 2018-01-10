@@ -10,7 +10,7 @@ namespace Parqueadero.Services
 {
     public class PrintService
     {
-        private async Task<bool> Print(VehicleRecord vehicle)
+        public async Task<bool> Print(VehicleRecord vehicle)
         {
             try
             {
