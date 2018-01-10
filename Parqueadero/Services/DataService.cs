@@ -12,23 +12,19 @@ namespace Parqueadero.Services
 {
     public class DataService
     {
+        // TODO: load from settings
+        private string parkingLotId = "PARKING_LOT";
+        private string applicationUrl = "APPLICATION_URL";
+
         private MobileServiceClient client;
-        public MobileServiceClient Client
-        {
-            get { return client; }
-        }
-
         private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
-        private ParkingLot _parking;
 
-        public DataService(ParkingLot parking)
+        public DataService()
         {
-            _parking = parking;
-            client = new MobileServiceClient(Constants.ApplicationURL, new DataServiceHandler());
-
             var store = new MobileServiceSQLiteStore("parqueaderostore.db");
             store.DefineTable<VehicleRecord>();
 
+            client = new MobileServiceClient(applicationUrl, new DataServiceHandler());
             client.SyncContext.InitializeAsync(store);
             vehicleTable = client.GetSyncTable<VehicleRecord>();
         }
@@ -37,8 +33,8 @@ namespace Parqueadero.Services
         {
             try
             {
-                var vehicles = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done).OrderBy(v => v.VehicleType).ToEnumerableAsync();
-                return vehicles;
+                var results = await vehicleTable.Where(v => v.ParkingLotId == parkingLotId && !v.Done).OrderBy(v => v.VehicleType).ToEnumerableAsync();
+                return results;
             }
             catch (Exception e)
             {
@@ -51,8 +47,8 @@ namespace Parqueadero.Services
         {
             try
             {
-                var results = await vehicleTable.Where(v => v.ParkingLotId == _parking.Id && !v.Done && v.Plate == plate).ToListAsync();
-                return results.Count > 0 ? results[0] : null;
+                var results = await vehicleTable.Where(v => v.ParkingLotId == parkingLotId && !v.Done && v.Plate == plate).ToListAsync();
+                return results.Count == 1 ? results[0] : null;
             }
             catch (Exception e)
             {
@@ -81,19 +77,13 @@ namespace Parqueadero.Services
 
             try
             {
-                var syncQuery = vehicleTable.CreateQuery().Where(v => v.ParkingLotId == _parking.Id);
-                var purgeQuery = vehicleTable.CreateQuery().Where(v => v.Done);
-
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", syncQuery);
-                await vehicleTable.PurgeAsync(purgeQuery);
+                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == parkingLotId));
+                await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done));
             }
             catch (MobileServicePushFailedException exc)
             {
-                if (exc.PushResult != null)
-                {
-                    syncErrors = exc.PushResult.Errors;
-                }
+                syncErrors = exc.PushResult?.Errors;
             }
 
             if (syncErrors != null)
