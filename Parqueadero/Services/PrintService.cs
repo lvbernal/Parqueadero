@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Net.Http;
 using Parqueadero.Models;
+using Parqueadero.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text;
@@ -14,10 +15,9 @@ namespace Parqueadero.Services
         {
             try
             {
-                // TODO: Load printer url from settings.
-                var printerUrl = "PRINTER_URL";
+                var printerUrl = Settings.PrinterUrl;
 
-                if (printerUrl == "dev")
+                if (String.IsNullOrWhiteSpace(printerUrl))
                 {
                     return true;
                 }

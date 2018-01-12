@@ -213,7 +213,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\checkin.png" />

@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummaryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SummaryItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />

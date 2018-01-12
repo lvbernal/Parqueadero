@@ -12,8 +12,6 @@ namespace Parqueadero.Services
 {
     public class DataService
     {
-        // TODO: load from settings. Id appears also in ParkingLotModel
-        private string parkingLotId = "PARKING_LOT";
         private string applicationUrl = "APPLICATION_URL";
 
         private MobileServiceClient client;
@@ -33,7 +31,7 @@ namespace Parqueadero.Services
         {
             try
             {
-                var results = await vehicleTable.Where(v => v.ParkingLotId == parkingLotId && !v.Done).OrderBy(v => v.VehicleType).ToEnumerableAsync();
+                var results = await vehicleTable.Where(v => v.ParkingLotId == Settings.ParkingLotId && !v.Done).OrderBy(v => v.VehicleType).ToEnumerableAsync();
                 return results;
             }
             catch (Exception e)
@@ -47,7 +45,7 @@ namespace Parqueadero.Services
         {
             try
             {
-                var results = await vehicleTable.Where(v => v.ParkingLotId == parkingLotId && !v.Done && v.Plate == plate).ToListAsync();
+                var results = await vehicleTable.Where(v => v.ParkingLotId == Settings.ParkingLotId && !v.Done && v.Plate == plate).ToListAsync();
                 return results.Count == 1 ? results[0] : null;
             }
             catch (Exception e)
@@ -78,7 +76,7 @@ namespace Parqueadero.Services
             try
             {
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == parkingLotId));
+                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Settings.ParkingLotId));
                 await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done));
             }
             catch (MobileServicePushFailedException exc)
