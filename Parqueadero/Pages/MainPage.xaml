@@ -34,6 +34,12 @@
                     <TapGestureRecognizer Command="{Binding ShowSummaryCommand}" />
                 </controls:CircleImage.GestureRecognizers>
             </controls:CircleImage>
+
+            <controls:CircleImage Source="summary.png" HeightRequest="96" WidthRequest="96">
+                <controls:CircleImage.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ShowSettingsCommand}" />
+                </controls:CircleImage.GestureRecognizers>
+            </controls:CircleImage>
             
         </StackLayout>
         

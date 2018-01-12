@@ -41,6 +41,17 @@ namespace Parqueadero.ViewModels
             }
         }
 
+        private SettingsViewModel _settings;
+        public SettingsViewModel Settings
+        {
+            get { return _settings; }
+            set
+            {
+                _settings = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private bool _busy;
         public bool Busy
         {
@@ -62,12 +73,13 @@ namespace Parqueadero.ViewModels
             DoCheckInCommand = new Command(DoCheckIn, () => !Busy);
             DoCheckOutCommand = new Command(DoCheckOut, () => !Busy);
             ShowSummaryCommand = new Command(ShowSummary, () => !Busy);
+            ShowSettingsCommand = new Command(ShowSettings, () => !Busy);
 
             SyncVehicles();
         }
 
         public Command DoCheckInCommand { get; }
-        public async void DoCheckIn()
+        private async void DoCheckIn()
         {
             Busy = true;
             SyncVehicles();
@@ -77,7 +89,7 @@ namespace Parqueadero.ViewModels
         }
 
         public Command DoCheckOutCommand { get; }
-        public async void DoCheckOut()
+        private async void DoCheckOut()
         {
             Busy = true;
             SyncVehicles();
@@ -87,12 +99,21 @@ namespace Parqueadero.ViewModels
         }
 
         public Command ShowSummaryCommand { get; }
-        public async void ShowSummary()
+        private async void ShowSummary()
         {
             Busy = true;
             SyncVehicles();
             Summary = new SummaryViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
+            Busy = false;
+        }
+
+        public Command ShowSettingsCommand { get; }
+        private async void ShowSettings()
+        {
+            Busy = true;
+            Settings = new SettingsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage());
             Busy = false;
         }
 

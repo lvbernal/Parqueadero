@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     x:Class="Parqueadero.Pages.SummaryPage"
+    Title="Resumen"
     BindingContext="{Binding Main, Source={StaticResource Locator}}">
 
     <ContentPage.Padding>
