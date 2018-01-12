@@ -72,9 +72,14 @@ namespace Parqueadero.ViewModels
         private async Task LoadValues()
         {
             Items.Clear();
+            await LoadSummaryByDate();
+            await LoadCurrentVehicles();
+        }
 
+        private async Task LoadSummaryByDate()
+        {
+            /*
             var dateStr = Date.Date.ToString("yyyy-MM-dd");
-
             Items.Add(new SummaryItem() { Image = "cash.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "vcar.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "vpickup.png", Text = dateStr, Value = "Pendiente" });
@@ -82,14 +87,10 @@ namespace Parqueadero.ViewModels
             Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "vbike.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "equal.png", Text = dateStr, Value = "Pendiente" });
-            Items.Add(new SummaryItem() { Image = "vcar.png", Text = "Actual", Value = CountDict["car"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vpickup.png", Text = "Actual", Value = CountDict["pickup"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vtruck.png", Text = "Actual", Value = CountDict["truck"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = "Actual", Value = CountDict["motorbike"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vbike.png", Text = "Actual", Value = CountDict["bike"].ToString() });
+			*/
         }
 
-        private async Task LoadVehicles()
+        private async Task LoadCurrentVehicles()
         {
             var vehicles = await ((DataService)Application.Current.Resources["DataService"]).GetVehiclesAsync();
 
@@ -101,6 +102,12 @@ namespace Parqueadero.ViewModels
                     Vehicles.Add(vehicle);
                 }
             }
+
+            Items.Add(new SummaryItem() { Image = "vcar.png", Text = "Actual", Value = CountDict["car"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vpickup.png", Text = "Actual", Value = CountDict["pickup"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vtruck.png", Text = "Actual", Value = CountDict["truck"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = "Actual", Value = CountDict["motorbike"].ToString() });
+            Items.Add(new SummaryItem() { Image = "vbike.png", Text = "Actual", Value = CountDict["bike"].ToString() });
         }
     }
 }
