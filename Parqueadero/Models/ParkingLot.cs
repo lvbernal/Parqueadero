@@ -5,50 +5,33 @@ namespace Parqueadero.Models
 {
     public class ParkingLot
     {
-        public static int HourToleranceInMinutes { get; set; }
-        public static double CarBase { get; set; }
-        public static double CarFee { get; set; }
-        public static double PickupBase { get; set; }
-        public static double PickupFee { get; set; }
-        public static double TruckBase { get; set; }
-        public static double TruckFee { get; set; }
-        public static double MotorbikeBase { get; set; }
-        public static double MotorbikeFee { get; set; }
-        public static double BikeBase { get; set; }
-        public static double BikeFee { get; set; }
-        public static double HelmetsBase { get; set; }
-
-        private ParkingLot()
-        {
-            HourToleranceInMinutes = 10;
-
-            CarBase = 2500;
-            CarFee = 2500;
-            PickupBase = 2500;
-            PickupFee = 2500;
-            TruckBase = 3000;
-            TruckFee = 3000;
-            MotorbikeBase = 1500;
-            MotorbikeFee = 500;
-            BikeBase = 1000;
-            BikeFee = 0;
-            HelmetsBase = 500;
-        }
+        private static int hourToleranceInMinutes = 10;
+        private static double carBase = 2500;
+        private static double carFee = 2500;
+        private static double pickupBase = 2500;
+        private static double pickupFee = 2500;
+        private static double truckBase = 3000;
+        private static double truckFee = 3000;
+        private static double motorbikeBase = 1500;
+        private static double motorbikeFee = 500;
+        private static double bikeBase = 1000;
+        private static double bikeFee = 0;
+        private static double helmetsBase = 500;
 
         public static double GetBaseFee(string vehicleType)
         {
             switch (vehicleType)
             {
                 case Constants.Car:
-                    return CarBase;
+                    return carBase;
                 case Constants.Pickup:
-                    return PickupBase;
+                    return pickupBase;
                 case Constants.Truck:
-                    return TruckBase;
+                    return truckBase;
                 case Constants.Motorbike:
-                    return MotorbikeBase;
+                    return motorbikeBase;
                 case Constants.Bike:
-                    return BikeBase;
+                    return bikeBase;
                 default:
                     return 0;
             }
@@ -59,15 +42,15 @@ namespace Parqueadero.Models
             switch (vehicleType)
             {
                 case Constants.Car:
-                    return CarFee;
+                    return carFee;
                 case Constants.Pickup:
-                    return PickupFee;
+                    return pickupFee;
                 case Constants.Truck:
-                    return TruckFee;
+                    return truckFee;
                 case Constants.Motorbike:
-                    return MotorbikeFee;
+                    return motorbikeFee;
                 case Constants.Bike:
-                    return BikeFee;
+                    return bikeFee;
                 default:
                     return 0;
             }
@@ -75,7 +58,7 @@ namespace Parqueadero.Models
 
         public static double GetHelmetsFee()
         {
-            return HelmetsBase;
+            return helmetsBase;
         }
 
         public static VehicleRecord AddCheckInInfoForVehicle(VehicleRecord vehicle)
@@ -116,7 +99,7 @@ namespace Parqueadero.Models
             var hours = difference.Hours;
             var minutes = difference.Minutes;
 
-            if (hours > 0 && minutes <= HourToleranceInMinutes)
+            if (hours > 0 && minutes <= hourToleranceInMinutes)
             {
                 hours--;
             }
