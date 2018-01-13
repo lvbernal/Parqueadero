@@ -7,6 +7,7 @@ Aplicación para el negocio familiar.
 * check in by Chinnaking from the Noun Project
 * checkout by Chinnaking from the Noun Project
 * clipboard by jeff from the Noun Project
+* Settings by jeff from the Noun Project
 * Car by jeff from the Noun Project
 * Truck by jeff from the Noun Project
 * Truck by jeff from the Noun Project
