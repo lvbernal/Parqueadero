@@ -17,20 +17,23 @@ namespace Parqueadero.ViewModels
                 _currentVehicle = value;
                 NotifyPropertyChanged();
 
-                _currentVehicle = ParkingLot.Instance.AddCheckOutInfoForVehicle(_currentVehicle);
+                if (_currentVehicle != null)
+                {
+                    _currentVehicle = ParkingLot.AddCheckOutInfoForVehicle(_currentVehicle);
 
-                VehicleType = _currentVehicle.VehicleType;
-                Plate = _currentVehicle.Plate;
-                CheckInTime = _currentVehicle.CheckIn;
-                CheckOutTime = _currentVehicle.CheckOut;
-                Helmets = _currentVehicle.Helmets;
-                TotalFee = _currentVehicle.Fee;
-                BaseFee = _currentVehicle.BaseFee;
-                HelmetsFee = _currentVehicle.HelmetsFee;
-                AdditionalHours = _currentVehicle.AdditionalHours;
-                AdditionalFee = _currentVehicle.AdditionalFee;
+                    VehicleType = _currentVehicle.VehicleType;
+                    Plate = _currentVehicle.Plate;
+                    CheckInTime = _currentVehicle.CheckIn;
+                    CheckOutTime = _currentVehicle.CheckOut;
+                    Helmets = _currentVehicle.Helmets;
+                    TotalFee = _currentVehicle.Fee;
+                    BaseFee = _currentVehicle.BaseFee;
+                    HelmetsFee = _currentVehicle.HelmetsFee;
+                    AdditionalHours = _currentVehicle.AdditionalHours;
+                    AdditionalFee = _currentVehicle.AdditionalFee;
 
-                DoScan = false;
+                    DoScan = false;
+                }
             }
         }
 
@@ -56,7 +59,7 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private string _plate;
+        private string _plate = String.Empty;
         public string Plate
         {
             get { return _plate; }
@@ -144,7 +147,7 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private string _noReceiptPlate;
+        private string _noReceiptPlate = String.Empty;
         public string NoReceiptPlate
         {
             get { return _noReceiptPlate; }

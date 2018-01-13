@@ -5,44 +5,21 @@ namespace Parqueadero.Models
 {
     public class ParkingLot
     {
-        private static ParkingLot _instance;
-        public static ParkingLot Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ParkingLot();
-                }
-
-                return _instance;
-            }
-        }
-
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string PrinterUrl { get; set; }
-
-        public int HourToleranceInMinutes { get; set; }
-
-        public double CarBase { get; set; }
-        public double CarFee { get; set; }
-        public double PickupBase { get; set; }
-        public double PickupFee { get; set; }
-        public double TruckBase { get; set; }
-        public double TruckFee { get; set; }
-        public double MotorbikeBase { get; set; }
-        public double MotorbikeFee { get; set; }
-        public double BikeBase { get; set; }
-        public double BikeFee { get; set; }
-        public double HelmetsBase { get; set; }
+        public static int HourToleranceInMinutes { get; set; }
+        public static double CarBase { get; set; }
+        public static double CarFee { get; set; }
+        public static double PickupBase { get; set; }
+        public static double PickupFee { get; set; }
+        public static double TruckBase { get; set; }
+        public static double TruckFee { get; set; }
+        public static double MotorbikeBase { get; set; }
+        public static double MotorbikeFee { get; set; }
+        public static double BikeBase { get; set; }
+        public static double BikeFee { get; set; }
+        public static double HelmetsBase { get; set; }
 
         private ParkingLot()
         {
-            Id = "PARKINGLOT_ID";
-            Name = "PARKINGLOT_NAME";
-            PrinterUrl = "PRINTER_URL";
-
             HourToleranceInMinutes = 10;
 
             CarBase = 2500;
@@ -58,7 +35,7 @@ namespace Parqueadero.Models
             HelmetsBase = 500;
         }
 
-        public double GetBaseFee(string vehicleType)
+        public static double GetBaseFee(string vehicleType)
         {
             switch (vehicleType)
             {
@@ -77,7 +54,7 @@ namespace Parqueadero.Models
             }
         }
 
-        public double GetFee(string vehicleType)
+        public static double GetFee(string vehicleType)
         {
             switch (vehicleType)
             {
@@ -96,22 +73,22 @@ namespace Parqueadero.Models
             }
         }
 
-        public double GetHelmetsFee()
+        public static double GetHelmetsFee()
         {
             return HelmetsBase;
         }
 
-        public VehicleRecord AddCheckInInfoForVehicle(VehicleRecord vehicle)
+        public static VehicleRecord AddCheckInInfoForVehicle(VehicleRecord vehicle)
         {
             vehicle.CheckIn = DateTime.Now.ToLocalTime();
-            vehicle.ParkingLotId = Id;
+            vehicle.ParkingLotId = Settings.ParkingLotId;
             vehicle.BaseFee = GetBaseFee(vehicle.VehicleType);
             vehicle.AdditionalFee = GetFee(vehicle.VehicleType);
             vehicle.HelmetsFee = GetHelmetsFee();
             return vehicle;
         }
 
-        public VehicleRecord AddCheckOutInfoForVehicle(VehicleRecord vehicle)
+        public static VehicleRecord AddCheckOutInfoForVehicle(VehicleRecord vehicle)
         {
             vehicle.CheckOut = DateTime.Now.ToLocalTime();
             vehicle.Done = true;
@@ -133,7 +110,7 @@ namespace Parqueadero.Models
             return vehicle;
         }
 
-        private int CalculateAdditionalHours(VehicleRecord vehicle)
+        private static int CalculateAdditionalHours(VehicleRecord vehicle)
         {
             var difference = vehicle.CheckOut - vehicle.CheckIn;
             var hours = difference.Hours;
@@ -147,7 +124,7 @@ namespace Parqueadero.Models
             return hours > 0 ? hours : 0;
         }
 
-        private double CalculateHelmetsFee(VehicleRecord vehicle)
+        private static double CalculateHelmetsFee(VehicleRecord vehicle)
         {
             return GetHelmetsFee() * vehicle.Helmets;
         }

@@ -106,9 +106,9 @@ namespace Parqueadero.ViewModels
         {
             get
             {
-                var helmetsRate = ParkingLot.Instance.GetHelmetsFee() * Helmets;
-                var baseFee = ParkingLot.Instance.GetBaseFee(SelectedVehicle?.VehicleType);
-                var fee = ParkingLot.Instance.GetFee(SelectedVehicle?.VehicleType);
+                var helmetsRate = ParkingLot.GetHelmetsFee() * Helmets;
+                var baseFee = ParkingLot.GetBaseFee(SelectedVehicle?.VehicleType);
+                var fee = ParkingLot.GetFee(SelectedVehicle?.VehicleType);
 
                 if (helmetsRate > 0)
                 {
@@ -243,7 +243,7 @@ namespace Parqueadero.ViewModels
                 Helmets = Helmets
             };
 
-            return ParkingLot.Instance.AddCheckInInfoForVehicle(vehicle);
+            return ParkingLot.AddCheckInInfoForVehicle(vehicle);
         }
 
         private async Task<bool> Print(VehicleRecord vehicle)
