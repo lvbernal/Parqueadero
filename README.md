@@ -18,6 +18,7 @@ Aplicación para el negocio familiar.
 * subtraction by Marta Ambrosetti from the Noun Project
 * addition by Marta Ambrosetti from the Noun Project
 * Equal by Marta Ambrosetti from the Noun Project
+* Parking by Arthur Shlain from the Noun Project
 
 ### Paleta de colores
 * Copy of Picture book by Robert Lasch from Adobe Color CC
