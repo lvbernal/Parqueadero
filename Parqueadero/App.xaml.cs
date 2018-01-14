@@ -1,6 +1,8 @@
 ﻿using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 using Parqueadero.Pages;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Parqueadero
 {
     public partial class App : Application
