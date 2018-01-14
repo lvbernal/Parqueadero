@@ -193,7 +193,7 @@ namespace Parqueadero.ViewModels
         {
             SavingAndPrinting = true;
 
-            await ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(CurrentVehicle);
+            ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(CurrentVehicle);
             var printed = await Print();
 
             if (!printed)

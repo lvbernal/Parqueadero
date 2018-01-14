@@ -212,7 +212,7 @@ namespace Parqueadero.ViewModels
 
                 if (printed)
                 {
-                    await ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(vehicle);
+                    ((DataService)Application.Current.Resources["DataService"]).SaveVehicle(vehicle);
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else
