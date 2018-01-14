@@ -21,7 +21,7 @@ namespace Parqueadero.Helpers
 
         public static string ParkingLotId
         {
-            get { return AppSettings.GetValueOrDefault(nameof(ParkingLotId), "demo"); }
+            get { return AppSettings.GetValueOrDefault(nameof(ParkingLotId), string.Empty); }
             set { AppSettings.AddOrUpdateValue(nameof(ParkingLotId), value); }
         }
 
