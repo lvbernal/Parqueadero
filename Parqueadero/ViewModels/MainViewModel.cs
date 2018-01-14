@@ -83,6 +83,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
+            ReleaseResources();
             CheckIn = new CheckInViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new CheckInPage());
             Busy = false;
@@ -93,6 +94,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
+            ReleaseResources();
             CheckOut = new CheckOutViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new CheckOutPage());
             Busy = false;
@@ -103,6 +105,7 @@ namespace Parqueadero.ViewModels
         {
             Busy = true;
             SyncVehicles();
+            ReleaseResources();
             Summary = new SummaryViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new SummaryPage());
             Busy = false;
@@ -112,6 +115,7 @@ namespace Parqueadero.ViewModels
         private async void ShowSettings()
         {
             Busy = true;
+            ReleaseResources();
             Settings = new SettingsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new SettingsPage());
             Busy = false;
@@ -125,6 +129,14 @@ namespace Parqueadero.ViewModels
                 await ((DataService)Application.Current.Resources["DataService"]).SyncAsync();
                 loadingVehicles = false;
             }
+        }
+
+        public void ReleaseResources()
+        {
+            CheckIn = null;
+            CheckOut = null;
+            Summary = null;
+            Settings = null;
         }
     }
 }
