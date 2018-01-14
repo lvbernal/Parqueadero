@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Parqueadero.Views.SummaryItem">
+    
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal">
+            <Image Source="{Binding Image}" HeightRequest="48" WidthRequest="48" BackgroundColor="#3b3f42" />
+            <Label Text="{Binding Text}" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+            <Label Text="{Binding Value}" FontSize="Medium" HorizontalOptions="End" VerticalOptions="Center" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

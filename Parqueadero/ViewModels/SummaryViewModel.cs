@@ -22,17 +22,6 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private ObservableCollection<SummaryItem> _items = new ObservableCollection<SummaryItem>();
-        public ObservableCollection<SummaryItem> Items
-        {
-            get { return _items; }
-            set
-            {
-                _items = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         private ObservableCollection<VehicleRecord> _vehicles = new ObservableCollection<VehicleRecord>();
         public ObservableCollection<VehicleRecord> Vehicles
         {
@@ -44,20 +33,76 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private Dictionary<string, int> _countDict;
-        public Dictionary<string, int> CountDict
+        private SummaryItemViewModel _carSummary = new SummaryItemViewModel() { Image = "vcar.png", Text = "Carros", Value = "0" };
+        public SummaryItemViewModel CarSummary
         {
-            get { return _countDict; }
+            get { return _carSummary; }
             set
             {
-                _countDict = value;
+                _carSummary = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private SummaryItemViewModel _pickupSummary = new SummaryItemViewModel() { Image = "vpickup.png", Text = "Camionetas", Value = "0" };
+        public SummaryItemViewModel PickupSummary
+        {
+            get { return _pickupSummary; }
+            set
+            {
+                _pickupSummary = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private SummaryItemViewModel _truckSummary = new SummaryItemViewModel() { Image = "vtruck.png", Text = "Camiones", Value = "0" };
+        public SummaryItemViewModel TruckSummary
+        {
+            get { return _truckSummary; }
+            set
+            {
+                _truckSummary = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private SummaryItemViewModel _motorbikeSummary = new SummaryItemViewModel() { Image = "vmotorbike.png", Text = "Motos", Value = "0" };
+        public SummaryItemViewModel MotorbikeSummary
+        {
+            get { return _motorbikeSummary; }
+            set
+            {
+                _motorbikeSummary = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private SummaryItemViewModel _bikeSummary = new SummaryItemViewModel() { Image = "vbike.png", Text = "Bicicletas", Value = "0" };
+        public SummaryItemViewModel BikeSummary
+        {
+            get { return _bikeSummary; }
+            set
+            {
+                _bikeSummary = value;
                 NotifyPropertyChanged();
             }
         }
 
         public SummaryViewModel()
         {
-            CountDict = new Dictionary<string, int>
+            Date = DateTime.Now.ToLocalTime();
+        }
+
+        private async Task LoadValues()
+        {
+            Vehicles.Clear();
+            await LoadCurrentVehicles();
+        }
+
+        private async Task LoadCurrentVehicles()
+        {
+            var vehicles = await ((DataService)Application.Current.Resources["DataService"]).GetVehiclesAsync();
+            var countDict = new Dictionary<string, int>
             {
                 { "car", 0 },
                 { "pickup", 0 },
@@ -66,19 +111,25 @@ namespace Parqueadero.ViewModels
                 { "bike", 0 }
             };
 
-            Date = DateTime.Now.ToLocalTime();
+            if (vehicles != null)
+            {
+                foreach (var vehicle in vehicles)
+                {
+                    countDict[vehicle.VehicleType]++;
+                    Vehicles.Add(vehicle);
+                }
+
+                CarSummary.Value = countDict["car"].ToString();
+                PickupSummary.Value = countDict["pickup"].ToString();
+                TruckSummary.Value = countDict["truck"].ToString();
+                MotorbikeSummary.Value = countDict["motorbike"].ToString();
+                BikeSummary.Value = countDict["bike"].ToString();
+            }
         }
 
-        private async Task LoadValues()
-        {
-            Items.Clear();
-            await LoadSummaryByDate();
-            await LoadCurrentVehicles();
-        }
-
+        /*
         private async Task LoadSummaryByDate()
         {
-            /*
             var dateStr = Date.Date.ToString("yyyy-MM-dd");
             Items.Add(new SummaryItem() { Image = "cash.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "vcar.png", Text = dateStr, Value = "Pendiente" });
@@ -87,27 +138,8 @@ namespace Parqueadero.ViewModels
             Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "vbike.png", Text = dateStr, Value = "Pendiente" });
             Items.Add(new SummaryItem() { Image = "equal.png", Text = dateStr, Value = "Pendiente" });
-			*/
         }
+        */
 
-        private async Task LoadCurrentVehicles()
-        {
-            var vehicles = await ((DataService)Application.Current.Resources["DataService"]).GetVehiclesAsync();
-
-            if (vehicles != null)
-            {
-                foreach (var vehicle in vehicles)
-                {
-                    CountDict[vehicle.VehicleType]++;
-                    Vehicles.Add(vehicle);
-                }
-            }
-
-            Items.Add(new SummaryItem() { Image = "vcar.png", Text = "Actual", Value = CountDict["car"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vpickup.png", Text = "Actual", Value = CountDict["pickup"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vtruck.png", Text = "Actual", Value = CountDict["truck"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vmotorbike.png", Text = "Actual", Value = CountDict["motorbike"].ToString() });
-            Items.Add(new SummaryItem() { Image = "vbike.png", Text = "Actual", Value = CountDict["bike"].ToString() });
-        }
     }
 }

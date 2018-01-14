@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:views="clr-namespace:Parqueadero.Views"
     x:Class="Parqueadero.Pages.SummaryPage"
     Title="Resumen"
     BindingContext="{Binding Main, Source={StaticResource Locator}}">
@@ -12,7 +13,7 @@
     </ContentPage.Padding>
 
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout BindingContext="{Binding Summary}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <!--
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                 <Label Text="Totales por fecha" FontSize="Large" />
@@ -21,20 +22,35 @@
                 </DatePicker>
             </StackLayout>
             -->
-            <ListView ItemsSource="{Binding Items}" ItemTapped="OnItemTapped">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <Image Source="{Binding Image}" BackgroundColor="#3b3f42" />
-                                <Label Text="{Binding Text}" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                                <Label Text="{Binding Value}" FontSize="Medium" HorizontalOptions="End" VerticalOptions="Center" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            
+            <Label Text="Totales" HorizontalOptions="CenterAndExpand" FontSize="Large" />
+            
+            <StackLayout HorizontalOptions="FillAndExpand">
+                <views:SummaryItem BindingContext="{Binding CarSummary}" />
+                <views:SummaryItem BindingContext="{Binding PickupSummary}" />
+                <views:SummaryItem BindingContext="{Binding TruckSummary}" />
+                <views:SummaryItem BindingContext="{Binding MotorbikeSummary}" />
+                <views:SummaryItem BindingContext="{Binding BikeSummary}" />
+            </StackLayout>
+
+            <Label Text="Patio actual" HorizontalOptions="CenterAndExpand" FontSize="Large" />
+
+            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <ListView ItemsSource="{Binding Vehicles}" ItemTapped="OnItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding VehicleType, Converter={StaticResource VehicleLogoConverter}" BackgroundColor="#3b3f42" />
+                                    <Label Text="{Binding Plate}" FontSize="Medium" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                                    <Label Text="{Binding CheckIn}" FontSize="Medium" HorizontalOptions="End" VerticalOptions="Center" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+        </StackLayout>
         
-        </ScrollView>
-	</ContentPage.Content>
+    </ContentPage.Content>
 </ContentPage>
