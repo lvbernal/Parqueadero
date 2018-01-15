@@ -11,11 +11,9 @@
     </ContentPage.Padding>
     
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout BindingContext="{Binding Settings}">
-                <Entry Placeholder="ID del parqueadero" Text="{Binding ParkingLotId, Mode=TwoWay}" />
-                <Entry Placeholder="URL de la impresora" Text="{Binding PrinterUrl, Mode=TwoWay}" />
-            </StackLayout>
-        </ScrollView>
+        <StackLayout BindingContext="{Binding Settings}" VerticalOptions="CenterAndExpand">
+            <Entry Placeholder="ID del parqueadero" Text="{Binding ParkingLotId, Mode=TwoWay}" />
+            <Entry Placeholder="URL de la impresora" Text="{Binding PrinterUrl, Mode=TwoWay}" />
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

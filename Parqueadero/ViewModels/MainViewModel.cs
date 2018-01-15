@@ -123,7 +123,7 @@ namespace Parqueadero.ViewModels
 
         public async Task SyncVehicles()
         {
-            if (!loadingVehicles)
+            if (!loadingVehicles && !String.IsNullOrWhiteSpace(Settings.ParkingLotId))
             {
                 loadingVehicles = true;
                 await ((DataService)Application.Current.Resources["DataService"]).SyncAsync();
