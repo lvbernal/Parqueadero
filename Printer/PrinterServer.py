@@ -3,6 +3,7 @@
 
 
 import datetime
+from Queue import Queue
 import cherrypy
 from cherrypy.process.plugins import Daemonizer
 from cherrypy.process.plugins import PIDFile
@@ -44,13 +45,17 @@ class Printer(object):
             u"El parqueadero no se hace responsable por cascos y chalecos que se dejen en la moto."
         )
         self.contract_message = contract.encode("GB18030")
+        self.queue = Queue()
 
     @cherrypy.expose
     @cherrypy.tools.json_in()
     def printreceipt(self):
         """Print endpoint."""
         query = cherrypy.request.json
+        self._print(query)
+        return "Ok"
 
+    def _print(self, query):
         vehicle = query.get("vehicle", "")
         v_str = self._get_vehicle_str(vehicle)
         plate = query.get("plate", "")
@@ -115,7 +120,6 @@ class Printer(object):
             prt._raw(self.contract_message)
 
         prt.cut()
-        return "Ok"
 
     def _format_date(self, date):
         dt = dateutil.parser.parse(date)
