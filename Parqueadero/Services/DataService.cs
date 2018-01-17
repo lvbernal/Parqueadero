@@ -7,12 +7,13 @@ using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using System.Collections.ObjectModel;
 using Parqueadero.Models;
 using Parqueadero.Helpers;
+using Parqueadero.Infrastructure;
 
 namespace Parqueadero.Services
 {
     public class DataService
     {
-        private string applicationUrl = "APPLICATION_URL";
+        private string applicationUrl = AzureConfig.AzureUrl;
 
         private MobileServiceClient client;
         private IMobileServiceSyncTable<VehicleRecord> vehicleTable;
@@ -76,8 +77,9 @@ namespace Parqueadero.Services
             try
             {
                 await client.SyncContext.PushAsync();
-                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Settings.ParkingLotId && !v.Done));
-                await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done));
+                await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Settings.ParkingLotId));
+                // in case you change the parkingLotId
+                await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done || v.ParkingLotId != Settings.ParkingLotId));
             }
             catch (MobileServicePushFailedException exc)
             {

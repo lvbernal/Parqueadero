@@ -81,6 +81,7 @@
       <DependentUpon>SummaryItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummaryItemViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Infrastructure\AzureConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />
