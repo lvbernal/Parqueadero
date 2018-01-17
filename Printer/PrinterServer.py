@@ -66,7 +66,7 @@ class Printer(object):
         total_additional_fee = int(query.get("total_additional_fee", 0))
         helmets_fee = int(query.get("helmets_fee", 0))
 
-        p = printer.Usb(0x28e9, 0x0289, 0, 0x81, 0x03)
+        p = printer.Usb(0x4b43, 0x3538, 0, 0x82, 0x02)
         p.set(align='center')
 
         p.text("\n")
@@ -143,7 +143,7 @@ class Printer(object):
 if __name__ == "__main__":
     CHERRYPY_CONFIG = {
         "server.socket_host": "0.0.0.0",
-        "server.socket_port": 8000,
+        "server.socket_port": 80,
         "log.access_file": 'log_cherry.log',
         "log.error_file": 'log_error_cherry.log'
     }
