@@ -78,7 +78,7 @@ namespace Parqueadero.Services
             {
                 await client.SyncContext.PushAsync();
                 await vehicleTable.PullAsync("allVehicleRecords", vehicleTable.CreateQuery().Where(v => v.ParkingLotId == Settings.ParkingLotId));
-                // in case you change the parkingLotId
+                // the parkingLotId comparison is in case the user change it in Settings.
                 await vehicleTable.PurgeAsync(vehicleTable.CreateQuery().Where(v => v.Done || v.ParkingLotId != Settings.ParkingLotId));
             }
             catch (MobileServicePushFailedException exc)

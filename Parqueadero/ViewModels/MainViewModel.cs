@@ -66,8 +66,6 @@ namespace Parqueadero.ViewModels
             }
         }
 
-        private bool loadingVehicles = false;
-
         public MainViewModel()
         {
             DoCheckInCommand = new Command(DoCheckIn, () => !Busy);
@@ -123,12 +121,7 @@ namespace Parqueadero.ViewModels
 
         public async Task SyncVehicles()
         {
-            if (!loadingVehicles && !String.IsNullOrWhiteSpace(Settings.ParkingLotId))
-            {
-                loadingVehicles = true;
-                await ((DataService)Application.Current.Resources["DataService"]).SyncAsync();
-                loadingVehicles = false;
-            }
+            await ((DataService)Application.Current.Resources["DataService"]).SyncAsync();
         }
 
         public void ReleaseResources()
