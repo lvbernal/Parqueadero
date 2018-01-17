@@ -4,14 +4,13 @@
 
 import datetime
 from Queue import Queue
+from threading import Thread
 import cherrypy
-from cherrypy.process.plugins import Daemonizer
-from cherrypy.process.plugins import PIDFile
 import dateutil.parser
 from escpos import printer
 
 
-class Printer(object):
+class PrinterServer(object):
     """Printer server.
 
     Input
@@ -52,24 +51,24 @@ class Printer(object):
     def printreceipt(self):
         """Print endpoint."""
         query = cherrypy.request.json
-        self._print(query)
+        self.queue.put_nowait(query)
         return "Ok"
 
-    def _print(self, query):
-        vehicle = query.get("vehicle", "")
+    def _print(self, item):
+        vehicle = item.get("vehicle", "")
         v_str = self._get_vehicle_str(vehicle)
-        plate = query.get("plate", "")
-        helmets = query.get("helmets", 0)
-        checkin = query.get("checkin", "")
+        plate = item.get("plate", "")
+        helmets = item.get("helmets", 0)
+        checkin = item.get("checkin", "")
         ci_str = self._format_date(checkin)
-        complete = query.get("complete", False)
-        fee = int(query.get("fee", 0))
+        complete = item.get("complete", False)
+        fee = int(item.get("fee", 0))
 
-        base_fee = int(query.get("base_fee", 0))
-        additional_fee = int(query.get("additional_fee", 0))
-        additional_hours = int(query.get("additional_hours", 0))
-        total_additional_fee = int(query.get("total_additional_fee", 0))
-        helmets_fee = int(query.get("helmets_fee", 0))
+        base_fee = int(item.get("base_fee", 0))
+        additional_fee = int(item.get("additional_fee", 0))
+        additional_hours = int(item.get("additional_hours", 0))
+        total_additional_fee = int(item.get("total_additional_fee", 0))
+        helmets_fee = int(item.get("helmets_fee", 0))
 
         prt = printer.Usb(0x4b43, 0x3538, 0, 0x82, 0x02)
         prt.set(align='center')
@@ -90,7 +89,7 @@ class Printer(object):
         prt.text("\nIngreso: " + ci_str + "\n")
 
         if complete:
-            checkout = query.get("checkout", "")
+            checkout = item.get("checkout", "")
             co_str = self._format_date(checkout)
             prt.text("Salida:  " + co_str + "\n\n")
 
@@ -136,12 +135,12 @@ class Printer(object):
 
         return vehicle_map[vehicle]
 
-    @staticmethod
-    def deamonize():
-        """Run cherrypy instance in background."""
-        d = Daemonizer(cherrypy.engine)
-        d.subscribe()
-        PIDFile(cherrypy.engine, 'daemon.pid').subscribe()
+    def start_worker(self):
+        """Run the worker that reads the queue and prints."""
+        while True:
+            if not self.queue.empty():
+                item = self.queue.get()
+                self._print(item)
 
 
 if __name__ == "__main__":
@@ -151,7 +150,10 @@ if __name__ == "__main__":
         "log.access_file": 'log_cherry.log',
         "log.error_file": 'log_error_cherry.log'
     }
-
     cherrypy.config.update(CHERRYPY_CONFIG)
-    Printer.deamonize()
-    cherrypy.quickstart(Printer())
+
+    SERVER = PrinterServer()
+    WORKER = Thread(target=SERVER.start_worker)
+
+    WORKER.start()
+    cherrypy.quickstart(SERVER)

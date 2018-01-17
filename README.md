@@ -26,8 +26,8 @@ La aplicación es comercial, pero he aprendido mucho haciéndola y quiero compar
 
 ## Pendientes
 
-* Manejo de concurrencia en la impresión: El script de la impresora está muy mal estructurado, allí me falta mucho trabajo.
 * Autenticación y autorización: No quiero usar el modelo usuario/contraseña sino un "código de autorización".
+* Estructurar mejor el script de la impresora.
 * Internacionalización y manejo de cadenas de texto: Todos los textos están directamente en el código, en español.
 
 ## Configuración de la impresora
