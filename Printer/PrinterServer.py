@@ -12,25 +12,6 @@ from escpos import printer
 
 class Printer(object):
     """Printer server.
-    Deps (apt):
-        python-dev
-        python-setuptools
-        python-pip
-        libjpeg-dev (Raspbian)
-    Deps (pip):
-        cherrypy
-        python-escpos
-        python-dateutil
-
-    Config:
-        lsusb
-            Bus 001 Device 007: ID 28e9:0289
-        lsusb -vvv -d 28e9:0289 | grep bEndpointAddress | grep IN
-            bEndpointAddress  0x81 EP 1 IN
-        lsusb -vvv -d 28e9:0289 | grep bEndpointAddress | grep OUT
-            bEndpointAddress  0x03 EP 3 OUT
-        Final config
-            p = printer.Usb(0x28e9, 0x0289, 0, 0x81, 0x03)
 
     Input
         {
@@ -48,11 +29,6 @@ class Printer(object):
             'checkout': '0001-01-01T00:00:00'
         }
 
-    Create Cron
-        run command
-            sudo crontab -e
-        add to file
-            @reboot (sleep 10; python /PATH_TO_FILE/PrinterServer.py)
     """
     def __init__(self):
         contract = (
