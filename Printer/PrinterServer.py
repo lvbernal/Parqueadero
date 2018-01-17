@@ -66,55 +66,55 @@ class Printer(object):
         total_additional_fee = int(query.get("total_additional_fee", 0))
         helmets_fee = int(query.get("helmets_fee", 0))
 
-        p = printer.Usb(0x4b43, 0x3538, 0, 0x82, 0x02)
-        p.set(align='center')
+        prt = printer.Usb(0x4b43, 0x3538, 0, 0x82, 0x02)
+        prt.set(align='center')
 
-        p.text("\n")
-        p.text("Parqueadero Alquim\n")
-        p.text("NIT 31.945.821-9\n")
-        p.text("Carrera 5 con Calle 16\n")
-        p.text("Cali, Colombia\n\n")
+        prt.text("\n")
+        prt.text("Parqueadero Alquim\n")
+        prt.text("NIT 31.945.821-9\n")
+        prt.text("Carrera 5 con Calle 16\n")
+        prt.text("Cali, Colombia\n\n")
 
-        p.set(align='center', width=2, height=2)
-        p.text(v_str + " " + plate + "\n")
-        p.set(align='center', width=1, height=1)
+        prt.set(align='center', width=2, height=2)
+        prt.text(v_str + " " + plate + "\n")
+        prt.set(align='center', width=1, height=1)
 
         if helmets > 0:
-            p.text("Cascos: " + str(helmets) + "\n")
+            prt.text("Cascos: " + str(helmets) + "\n")
 
-        p.text("\nIngreso: " + ci_str + "\n")
+        prt.text("\nIngreso: " + ci_str + "\n")
 
         if complete:
             checkout = query.get("checkout", "")
             co_str = self._format_date(checkout)
-            p.text("Salida:  " + co_str + "\n\n")
+            prt.text("Salida:  " + co_str + "\n\n")
 
-            p.set(align='left')
-            p.text("Base: \t\t$" + str(base_fee) + "\n")
-            p.text("Hora adicional (" + str(additional_hours) + "): \t\t$" + str(total_additional_fee) + "\n")
+            prt.set(align='left')
+            prt.text("Base: \t\t$" + str(base_fee) + "\n")
+            prt.text("Hora adicional (" + str(additional_hours) + "): \t\t$" + str(total_additional_fee) + "\n")
 
             if helmets > 0:
-                p.text("Accesorios: \t\t$" + str(helmets_fee) + "\n")
+                prt.text("Accesorios: \t\t$" + str(helmets_fee) + "\n")
 
-            p.text("\n")
-            p.set(align='center', width=2, height=2)
-            p.text("$" + str(fee))
-            p.set(align='center', width=1, height=1)
+            prt.text("\n")
+            prt.set(align='center', width=2, height=2)
+            prt.text("$" + str(fee))
+            prt.set(align='center', width=1, height=1)
         else:
-            p.text("\n")
-            p.set(align='left')
-            p.text("Base: \t\t$" + str(base_fee) + "\n")
-            p.text("Hora adicional: \t\t$" + str(additional_fee) + "\n")
+            prt.text("\n")
+            prt.set(align='left')
+            prt.text("Base: \t\t$" + str(base_fee) + "\n")
+            prt.text("Hora adicional: \t\t$" + str(additional_fee) + "\n")
 
             if helmets > 0:
-                p.text("Accesorios (c/u): \t\t$" + str(helmets_fee) + "\n")
+                prt.text("Accesorios (c/u): \t\t$" + str(helmets_fee) + "\n")
 
-            p.text("\n")
-            p.qr(plate, size=8)
-            p.text("\n\n")
-            p._raw(self.contract_message)
+            prt.text("\n")
+            prt.qr(plate, size=8)
+            prt.text("\n\n")
+            prt._raw(self.contract_message)
 
-        p.cut()
+        prt.cut()
         return "Ok"
 
     def _format_date(self, date):

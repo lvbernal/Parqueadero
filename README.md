@@ -55,7 +55,7 @@ bEndpointAddress  0x03 EP 3 OUT
 Con los valores (de ejemplo) **0x28e9**, **0x0289**, **0x81** y **0x03**, se inicializa la impresora:
 
 ```
-p = printer.Usb(0x28e9, 0x0289, 0, 0x81, 0x03)
+prt = printer.Usb(0x28e9, 0x0289, 0, 0x81, 0x03)
 ```
 
 Configurar el inicio automático ejecutando ```[sudo] crontab -e``` y agregando:
