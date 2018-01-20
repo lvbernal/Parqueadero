@@ -3,6 +3,7 @@
 
 
 import datetime
+import time
 from Queue import Queue
 from threading import Thread
 import cherrypy
@@ -138,6 +139,7 @@ class PrinterServer(object):
     def start_worker(self):
         """Run the worker that reads the queue and prints."""
         while True:
+            time.sleep(2)
             if not self.queue.empty():
                 item = self.queue.get()
                 self._print(item)
