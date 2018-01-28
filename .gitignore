@@ -41,3 +41,4 @@ Thumbs.db
 Printer/log_cherry.log
 Printer/log_error_cherry.log
 .vs/Parqueadero/xs/UserPrefs.xml
+Parqueadero/Infrastructure/AzureConfig.cs
